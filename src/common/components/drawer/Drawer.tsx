@@ -6,6 +6,7 @@ import {
   MouseEvent,
   useContext,
 } from 'react';
+import { Link } from 'react-router-dom';
 import { Theme, useMediaQuery } from '@material-ui/core';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import List from '@material-ui/core/List';
@@ -85,35 +86,67 @@ const Drawer: FC = () => {
           </ListItem>
           <Collapse in={showNestedAuctions} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItem
-                button
-                className={`${classes.listNested} ${classes.success}`}
+              <Link
+                to="/auctions/live"
+                style={{ textDecoration: 'none', display: 'block' }}
+                onClick={handleToggleDrawer(false)}
               >
-                <ListItemIcon>
-                  <RssFeed />
-                </ListItemIcon>
-                <ListItemText primary="Live" color="primary" />
-              </ListItem>
-              <ListItem button className={classes.listNested}>
-                <ListItemIcon>
-                  <Gavel />
-                </ListItemIcon>
-                <ListItemText primary="Închise" />
-              </ListItem>
+                <ListItem
+                  button
+                  className={`${classes.listNested} ${classes.success}`}
+                >
+                  <ListItemIcon>
+                    <RssFeed />
+                  </ListItemIcon>
+                  <ListItemText primary="Live" color="primary" />
+                </ListItem>
+              </Link>
+              <Link
+                to="/auctions/closed"
+                style={{ textDecoration: 'none', display: 'block' }}
+                onClick={handleToggleDrawer(false)}
+              >
+                <ListItem button className={classes.listNested}>
+                  <ListItemIcon>
+                    <Gavel />
+                  </ListItemIcon>
+                  <ListItemText primary="Închise" />
+                </ListItem>
+              </Link>
             </List>
           </Collapse>
-          <ListItem button>
-            <ListItemIcon>
-              <AccountCircle />
-            </ListItemIcon>
-            <ListItemText primary="Despre noi" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <Help />
-            </ListItemIcon>
-            <ListItemText primary="Conectează-te" />
-          </ListItem>
+          <Link
+            to="/about"
+            style={{
+              textDecoration: 'none',
+              display: 'block',
+              color: isDarkMode ? 'white' : 'black',
+            }}
+            onClick={handleToggleDrawer(false)}
+          >
+            <ListItem button>
+              <ListItemIcon>
+                <AccountCircle />
+              </ListItemIcon>
+              <ListItemText primary="Despre noi" />
+            </ListItem>
+          </Link>
+          <Link
+            to="/account"
+            style={{
+              textDecoration: 'none',
+              display: 'block',
+              color: isDarkMode ? 'white' : 'black',
+            }}
+            onClick={handleToggleDrawer(false)}
+          >
+            <ListItem button>
+              <ListItemIcon>
+                <Help />
+              </ListItemIcon>
+              <ListItemText primary="Conectează-te" />
+            </ListItem>
+          </Link>
           <ListItem
             button
             onClick={() => onSetDarkMode && onSetDarkMode(!isDarkMode)}

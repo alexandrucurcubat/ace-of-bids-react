@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
 import App from './App';
@@ -9,7 +10,9 @@ import DarkThemeProvider from './common/theme/theme-context';
 ReactDOM.render(
   <React.StrictMode>
     <DarkThemeProvider>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </DarkThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')

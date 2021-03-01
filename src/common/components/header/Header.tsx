@@ -1,4 +1,5 @@
 import { FC, MouseEvent, useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Theme, useMediaQuery } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -57,21 +58,42 @@ const Header: FC = () => {
                 open={Boolean(anchorEl)}
                 onClose={handleAuctionsMenuClose}
               >
-                <MenuItem onClick={handleAuctionsMenuClose}>
-                  <ListItemIcon className={classes.listItemIcon}>
-                    <RssFeed fontSize="small" />
-                  </ListItemIcon>
-                  <Typography className={classes.success}>Live</Typography>
-                </MenuItem>
-                <MenuItem onClick={handleAuctionsMenuClose}>
-                  <ListItemIcon className={classes.listItemIcon}>
-                    <Gavel fontSize="small" />
-                  </ListItemIcon>
-                  <Typography>Închise</Typography>
-                </MenuItem>
+                <Link
+                  to="/auctions/live"
+                  style={{ textDecoration: 'none', display: 'block' }}
+                >
+                  <MenuItem onClick={handleAuctionsMenuClose}>
+                    <ListItemIcon className={classes.listItemIcon}>
+                      <RssFeed fontSize="small" />
+                    </ListItemIcon>
+                    <Typography className={classes.success}>Live</Typography>
+                  </MenuItem>
+                </Link>
+                <Link
+                  to="/auctions/closed"
+                  style={{ textDecoration: 'none', display: 'block' }}
+                >
+                  <MenuItem onClick={handleAuctionsMenuClose}>
+                    <ListItemIcon className={classes.listItemIcon}>
+                      <Gavel fontSize="small" />
+                    </ListItemIcon>
+                    <Typography>Închise</Typography>
+                  </MenuItem>
+                </Link>
               </Menu>
-              <Button style={{ textTransform: 'none' }}>Despre noi</Button>
-              <Button style={{ textTransform: 'none' }} color="primary">
+              <Button
+                component={Link}
+                to={'/about'}
+                style={{ textTransform: 'none' }}
+              >
+                Despre noi
+              </Button>
+              <Button
+                component={Link}
+                to={'/account'}
+                style={{ textTransform: 'none' }}
+                color="primary"
+              >
                 Conectează-te
               </Button>
               <IconButton
