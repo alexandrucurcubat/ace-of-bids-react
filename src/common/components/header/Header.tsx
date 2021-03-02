@@ -17,7 +17,11 @@ import Gavel from '@material-ui/icons/Gavel';
 import { useStyles } from '../../theme/theming';
 import { DarkThemeContext } from '../../theme/theme-context';
 
-const Header: FC = () => {
+interface HeaderProps {
+  onOpenAuthDialog: () => void;
+}
+
+const Header: FC<HeaderProps> = ({ onOpenAuthDialog }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { isDarkMode, onSetDarkMode } = useContext(DarkThemeContext);
   const darkModeIcon = isDarkMode ? <Brightness5Icon /> : <Brightness4Icon />;
@@ -89,9 +93,10 @@ const Header: FC = () => {
                 Despre noi
               </Button>
               <Button
-                component={Link}
-                to={'/account'}
+                // component={Link}
+                // to={'/account'}
                 style={{ textTransform: 'none' }}
+                onClick={() => onOpenAuthDialog()}
                 color="primary"
               >
                 Conectează-te

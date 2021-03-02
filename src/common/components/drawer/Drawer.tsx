@@ -30,7 +30,11 @@ import './Drawer.css';
 import { useStyles } from '../../theme/theming';
 import { DarkThemeContext } from '../../theme/theme-context';
 
-const Drawer: FC = () => {
+interface DrawerProps {
+  onOpenAuthDialog: () => void;
+}
+
+const Drawer: FC<DrawerProps> = ({ onOpenAuthDialog }) => {
   const [isOpened, setIsOpened] = useState(false);
   const [showNestedAuctions, setShowNestedAuctions] = useState(false);
   const { isDarkMode, onSetDarkMode } = useContext(DarkThemeContext);
@@ -131,7 +135,7 @@ const Drawer: FC = () => {
               <ListItemText primary="Despre noi" />
             </ListItem>
           </Link>
-          <Link
+          {/* <Link
             to="/account"
             style={{
               textDecoration: 'none',
@@ -139,14 +143,14 @@ const Drawer: FC = () => {
               color: isDarkMode ? 'white' : 'black',
             }}
             onClick={handleToggleDrawer(false)}
-          >
-            <ListItem button>
-              <ListItemIcon>
-                <Help />
-              </ListItemIcon>
-              <ListItemText primary="Conectează-te" />
-            </ListItem>
-          </Link>
+          > */}
+          <ListItem button onClick={() => onOpenAuthDialog()}>
+            <ListItemIcon>
+              <Help />
+            </ListItemIcon>
+            <ListItemText primary="Conectează-te" />
+          </ListItem>
+          {/* </Link> */}
           <ListItem
             button
             onClick={() => onSetDarkMode && onSetDarkMode(!isDarkMode)}
