@@ -17,27 +17,30 @@ const AuthDialog: FC<AuthDialogProps> = ({
   onCloseAuthDialog,
 }) => {
   const [formType, setFormType] = useState(AuthFormType.LOGIN);
-  const onLoginMode = () => setFormType(AuthFormType.LOGIN);
-  const onRegistrationMode = () => setFormType(AuthFormType.REGISTRATION);
-  const onPasswordResetMode = () => setFormType(AuthFormType.PASSWORD_RESET);
+
+  const handleCloseAuthDialog = () => onCloseAuthDialog();
+  const handleLoginMode = () => setFormType(AuthFormType.LOGIN);
+  const handleRegistrationMode = () => setFormType(AuthFormType.REGISTRATION);
+  const handlePasswordResetMode = () =>
+    setFormType(AuthFormType.PASSWORD_RESET);
 
   return (
     <Dialog
-      className="auth-dialog"
+      className={'auth-dialog'}
       open={isAuthDialogOpened}
-      onClose={onCloseAuthDialog}
+      onClose={handleCloseAuthDialog}
     >
       {formType === AuthFormType.LOGIN && (
         <LoginForm
-          onRegistrationMode={onRegistrationMode}
-          onPasswordResetMode={onPasswordResetMode}
+          onRegistrationMode={handleRegistrationMode}
+          onPasswordResetMode={handlePasswordResetMode}
         />
       )}
       {formType === AuthFormType.REGISTRATION && (
-        <RegistrationForm onLoginMode={onLoginMode} />
+        <RegistrationForm onLoginMode={handleLoginMode} />
       )}
       {formType === AuthFormType.PASSWORD_RESET && (
-        <PasswordResetForm onLoginMode={onLoginMode} />
+        <PasswordResetForm onLoginMode={handleLoginMode} />
       )}
     </Dialog>
   );

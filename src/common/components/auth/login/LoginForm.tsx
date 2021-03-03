@@ -9,7 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { LoginData } from '../models/auth-form-data';
-import { AuthContext } from '../auth-context';
+import { AuthContext } from '../context/auth-context';
 
 interface LoginFromProps {
   onRegistrationMode: () => void;
@@ -22,11 +22,9 @@ const LoginForm: FC<LoginFromProps> = ({
 }) => {
   const { register, handleSubmit, errors } = useForm();
   const { login } = useContext(AuthContext);
-
-  const onSubmit = (loginData: LoginData) => {
-    console.log(loginData);
-    login && login(loginData);
-  };
+  const handleRegistrationMode = () => onRegistrationMode();
+  const handlePasswordResetMode = () => onPasswordResetMode();
+  const onSubmit = (loginData: LoginData) => login && login(loginData);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -34,7 +32,11 @@ const LoginForm: FC<LoginFromProps> = ({
       <DialogContent>
         <DialogContentText>
           Încă nu ai un cont?
-          <Link className="link-register" to="#" onClick={onRegistrationMode}>
+          <Link
+            className="link-register"
+            to="#"
+            onClick={handleRegistrationMode}
+          >
             Înregistrează-te aici
           </Link>
         </DialogContentText>
@@ -85,7 +87,7 @@ const LoginForm: FC<LoginFromProps> = ({
         <Link
           className="link-reset-password"
           to="#"
-          onClick={onPasswordResetMode}
+          onClick={handlePasswordResetMode}
         >
           Ai uitat parola?
         </Link>

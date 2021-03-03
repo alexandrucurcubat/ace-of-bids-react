@@ -13,30 +13,37 @@ import Brightness4Icon from '@material-ui/icons/Brightness4';
 import Brightness5Icon from '@material-ui/icons/Brightness5';
 import RssFeed from '@material-ui/icons/RssFeed';
 import Gavel from '@material-ui/icons/Gavel';
+import Person from '@material-ui/icons/Person';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
 import { useStyles } from '../../theme/theming';
 import { DarkThemeContext } from '../../theme/theme-context';
+import { AuthContext } from '../auth/context/auth-context';
 
 interface HeaderProps {
   onOpenAuthDialog: () => void;
 }
 
 const Header: FC<HeaderProps> = ({ onOpenAuthDialog }) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [auctionsMenu, setAuctionsMenu] = useState<null | HTMLElement>(null);
+  const [accountMenu, setAccountMenu] = useState<null | HTMLElement>(null);
   const { isDarkMode, onSetDarkMode } = useContext(DarkThemeContext);
+  const { isLoggedIn, logout } = useContext(AuthContext);
   const darkModeIcon = isDarkMode ? <Brightness5Icon /> : <Brightness4Icon />;
   const classes = useStyles();
-  const isMobile = useMediaQuery((theme: Theme) => {
-    return theme.breakpoints.down('xs');
-  });
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('xs')
+  );
 
-  const handleAuctionsMenuClick = (event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleAuctionsMenuClose = () => {
-    setAnchorEl(null);
-  };
+  const handleOpenAuthDialog = () => onOpenAuthDialog();
+  const handleSetDarkMode = () => onSetDarkMode && onSetDarkMode(!isDarkMode);
+  const handleLogout = () => logout && logout();
+  const handleAuctionsMenuClick = (event: MouseEvent<HTMLButtonElement>) =>
+    setAuctionsMenu(event.currentTarget);
+  const handleAccountMenuClick = (event: MouseEvent<HTMLButtonElement>) =>
+    setAccountMenu(event.currentTarget);
+  const handleAuctionsMenuClose = () => setAuctionsMenu(null);
+  const handleAccountMenuClose = () => setAccountMenu(null);
 
   return (
     <>
@@ -56,10 +63,9 @@ const Header: FC<HeaderProps> = ({ onOpenAuthDialog }) => {
                 Licitații
               </Button>
               <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
+                anchorEl={auctionsMenu}
                 keepMounted
-                open={Boolean(anchorEl)}
+                open={Boolean(auctionsMenu)}
                 onClose={handleAuctionsMenuClose}
               >
                 <Link
@@ -92,20 +98,64 @@ const Header: FC<HeaderProps> = ({ onOpenAuthDialog }) => {
               >
                 Despre noi
               </Button>
-              <Button
-                // component={Link}
-                // to={'/account'}
-                style={{ textTransform: 'none' }}
-                onClick={() => onOpenAuthDialog()}
-                color="primary"
-              >
-                Conectează-te
-              </Button>
+              {isLoggedIn ? (
+                <>
+                  <Button
+                    color="primary"
+                    aria-controls="account-menu"
+                    aria-haspopup="true"
+                    onClick={handleAccountMenuClick}
+                    style={{ textTransform: 'none' }}
+                  >
+                    Contul meu
+                  </Button>
+                  <Menu
+                    anchorEl={accountMenu}
+                    keepMounted
+                    open={Boolean(accountMenu)}
+                    onClose={handleAccountMenuClose}
+                  >
+                    <Link
+                      to="/account"
+                      style={{ textDecoration: 'none', display: 'block' }}
+                    >
+                      <MenuItem onClick={handleAccountMenuClose}>
+                        <ListItemIcon className={classes.listItemIcon}>
+                          <Person fontSize="small" />
+                        </ListItemIcon>
+                        <Typography
+                          className={classes.listItemIcon}
+                          style={{ color: isDarkMode ? 'white' : 'black' }}
+                        >
+                          Vezi contul
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                    <div onClick={handleLogout}>
+                      <MenuItem onClick={handleAccountMenuClose}>
+                        <ListItemIcon className={classes.listItemIcon}>
+                          <PowerSettingsNewIcon fontSize="small" />
+                        </ListItemIcon>
+                        <Typography className="error">Deconectare</Typography>
+                      </MenuItem>
+                    </div>
+                  </Menu>
+                </>
+              ) : (
+                <Button
+                  style={{ textTransform: 'none' }}
+                  onClick={() => handleOpenAuthDialog()}
+                  color="primary"
+                >
+                  Conectează-te
+                </Button>
+              )}
+
               <IconButton
                 edge="end"
                 color={isDarkMode ? 'secondary' : 'inherit'}
                 aria-label="mode"
-                onClick={() => onSetDarkMode && onSetDarkMode(!isDarkMode)}
+                onClick={handleSetDarkMode}
               >
                 {darkModeIcon}
               </IconButton>

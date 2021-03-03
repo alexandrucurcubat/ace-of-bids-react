@@ -25,27 +25,38 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import RssFeed from '@material-ui/icons/RssFeed';
 import Gavel from '@material-ui/icons/Gavel';
+import Person from '@material-ui/icons/Person';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
 import './Drawer.css';
 import { useStyles } from '../../theme/theming';
 import { DarkThemeContext } from '../../theme/theme-context';
+import { AuthContext } from '../auth/context/auth-context';
 
 interface DrawerProps {
   onOpenAuthDialog: () => void;
 }
 
+const isIOS =
+  (process as any).browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+
 const Drawer: FC<DrawerProps> = ({ onOpenAuthDialog }) => {
   const [isOpened, setIsOpened] = useState(false);
   const [showNestedAuctions, setShowNestedAuctions] = useState(false);
+  const [showNestedAccount, setShowNestedAccount] = useState(false);
   const { isDarkMode, onSetDarkMode } = useContext(DarkThemeContext);
+  const { isLoggedIn, logout } = useContext(AuthContext);
   const darkModeIcon = isDarkMode ? <Brightness5Icon /> : <Brightness4Icon />;
   const classes = useStyles();
-  const isMobile = useMediaQuery((theme: Theme) => {
-    return theme.breakpoints.down('xs');
-  });
-  const isIOS =
-    (process as any).browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('xs')
+  );
 
+  const handleOpenAuthDialog = () => onOpenAuthDialog();
+  const handleSetDarkMode = () => onSetDarkMode && onSetDarkMode(!isDarkMode);
+  const handleLogout = () => logout && logout();
+  const handleNestedAuctions = () => setShowNestedAuctions(!showNestedAuctions);
+  const handleNestedAccount = () => setShowNestedAccount(!showNestedAccount);
   const handleToggleDrawer = (isOpened: boolean) => (
     event: KeyboardEvent | MouseEvent
   ) => {
@@ -60,14 +71,8 @@ const Drawer: FC<DrawerProps> = ({ onOpenAuthDialog }) => {
     setIsOpened(isOpened);
   };
 
-  const handleNestedAuctions = () => {
-    setShowNestedAuctions(!showNestedAuctions);
-  };
-
   useEffect(() => {
-    if (isOpened) {
-      setIsOpened(isMobile);
-    }
+    isOpened && setIsOpened(isMobile);
   }, [isMobile, isOpened]);
 
   return (
@@ -80,7 +85,7 @@ const Drawer: FC<DrawerProps> = ({ onOpenAuthDialog }) => {
         disableBackdropTransition={!isIOS}
         disableDiscovery={isIOS}
       >
-        <List component="nav" aria-label="main mailbox folders">
+        <List component="nav">
           <ListItem button onClick={handleNestedAuctions}>
             <ListItemIcon color="inherit">
               <MonetizationOn />
@@ -130,31 +135,63 @@ const Drawer: FC<DrawerProps> = ({ onOpenAuthDialog }) => {
           >
             <ListItem button>
               <ListItemIcon>
-                <AccountCircle />
+                <Help />
               </ListItemIcon>
               <ListItemText primary="Despre noi" />
             </ListItem>
           </Link>
-          {/* <Link
-            to="/account"
-            style={{
-              textDecoration: 'none',
-              display: 'block',
-              color: isDarkMode ? 'white' : 'black',
-            }}
-            onClick={handleToggleDrawer(false)}
-          > */}
-          <ListItem button onClick={() => onOpenAuthDialog()}>
-            <ListItemIcon>
-              <Help />
-            </ListItemIcon>
-            <ListItemText primary="Conectează-te" />
-          </ListItem>
-          {/* </Link> */}
-          <ListItem
-            button
-            onClick={() => onSetDarkMode && onSetDarkMode(!isDarkMode)}
-          >
+          {isLoggedIn ? (
+            <>
+              <ListItem button onClick={handleNestedAccount}>
+                <ListItemIcon>
+                  <AccountCircle />
+                </ListItemIcon>
+                <ListItemText primary="Contul meu" />
+                {showNestedAccount ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
+              <Collapse in={showNestedAccount} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  <Link
+                    to="/account"
+                    style={{ textDecoration: 'none', display: 'block' }}
+                    onClick={handleToggleDrawer(false)}
+                  >
+                    <ListItem button className={classes.listNested}>
+                      <ListItemIcon>
+                        <Person />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Vezi contul"
+                        style={{ color: isDarkMode ? 'white' : 'black' }}
+                      />
+                    </ListItem>
+                  </Link>
+                  <div onClick={handleLogout}>
+                    <ListItem
+                      button
+                      className={classes.listNested}
+                      onClick={handleToggleDrawer(false)}
+                    >
+                      <ListItemIcon>
+                        <PowerSettingsNewIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Deconectare" className="error" />
+                    </ListItem>
+                  </div>
+                </List>
+              </Collapse>
+            </>
+          ) : (
+            <div onClick={handleToggleDrawer(false)}>
+              <ListItem button onClick={handleOpenAuthDialog}>
+                <ListItemIcon>
+                  <AccountCircle />
+                </ListItemIcon>
+                <ListItemText primary="Conectează-te" />
+              </ListItem>
+            </div>
+          )}
+          <ListItem button onClick={handleSetDarkMode}>
             <ListItemIcon className={isDarkMode ? classes.secondary : ''}>
               {darkModeIcon}
             </ListItemIcon>

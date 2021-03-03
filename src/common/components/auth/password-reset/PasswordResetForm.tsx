@@ -14,9 +14,8 @@ interface PasswordResetFormProps {
 
 const PasswordResetForm: FC<PasswordResetFormProps> = ({ onLoginMode }) => {
   const { register, handleSubmit, errors } = useForm();
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+  const handleLoginMode = () => onLoginMode();
+  const onSubmit = (data: any) => console.log(data);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -24,7 +23,7 @@ const PasswordResetForm: FC<PasswordResetFormProps> = ({ onLoginMode }) => {
       <DialogContent>
         <DialogContentText>
           Cunoști parola?
-          <Link className="link-register" to="#" onClick={onLoginMode}>
+          <Link className="link-register" to="#" onClick={handleLoginMode}>
             Conectează-te
           </Link>
         </DialogContentText>

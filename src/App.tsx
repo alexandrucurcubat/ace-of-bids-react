@@ -10,26 +10,22 @@ import Footer from './common/components/footer/Footer';
 import { DarkThemeContext } from './common/theme/theme-context';
 import { useStyles } from './common/theme/theming';
 import AuthDialog from './common/components/auth/AuthDialog';
-import AuthProvider from './common/components/auth/auth-context';
+import AuthProvider from './common/components/auth/context/auth-provider';
 
 function App() {
+  const [isAuthDialogOpened, setAuthDialogOpened] = useState(false);
   const { theme } = useContext(DarkThemeContext);
   const classes = useStyles();
 
-  const [isAuthDialogOpened, setAuthDialogOpened] = useState(false);
-  const onOpenAuthDialog = () => {
-    setAuthDialogOpened(true);
-  };
-  const onCloseAuthDialog = () => {
-    setAuthDialogOpened(false);
-  };
+  const handleOpenAuthDialog = () => setAuthDialogOpened(true);
+  const handleCloseAuthDialog = () => setAuthDialogOpened(false);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AuthProvider>
-        <Drawer onOpenAuthDialog={onOpenAuthDialog} />
-        <Header onOpenAuthDialog={onOpenAuthDialog} />
+      <AuthProvider onCloseAuthDialog={handleCloseAuthDialog}>
+        <Drawer onOpenAuthDialog={handleOpenAuthDialog} />
+        <Header onOpenAuthDialog={handleOpenAuthDialog} />
         <Container fixed className={classes.appContainer}>
           <Switch>
             <Route path="/auctions/live">Licitații live</Route>
@@ -44,7 +40,7 @@ function App() {
         <Footer />
         <AuthDialog
           isAuthDialogOpened={isAuthDialogOpened}
-          onCloseAuthDialog={onCloseAuthDialog}
+          onCloseAuthDialog={handleCloseAuthDialog}
         />
       </AuthProvider>
     </ThemeProvider>

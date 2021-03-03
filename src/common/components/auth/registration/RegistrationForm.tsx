@@ -21,6 +21,7 @@ interface RegistrationFormData {
 
 const RegistrationForm: FC<RegistrationFormProps> = ({ onLoginMode }) => {
   const { register, handleSubmit, errors, setError } = useForm();
+  const handleLoginMode = () => onLoginMode();
   const onSubmit = (data: RegistrationFormData) => {
     if (data.password !== data.passwordConfirmation) {
       setError('passwordConfirmation', {
@@ -37,7 +38,7 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ onLoginMode }) => {
       <DialogContent>
         <DialogContentText>
           Deja ai un cont?
-          <Link className="link-register" to="#" onClick={onLoginMode}>
+          <Link className="link-register" to="#" onClick={handleLoginMode}>
             Conectează-te
           </Link>
         </DialogContentText>
