@@ -5,7 +5,6 @@ import { AuthContext } from './auth-context';
 import { LoginData } from '../models/auth-form-data';
 import { AuthJwt, AuthJwtPayload } from '../models/auth-jwt';
 import { LOCAL_STORAGE } from '../../../local-storage';
-import { API_URL } from '../../../environment';
 import {
   expiresIn,
   getTokenExpirationDate,
@@ -27,11 +26,14 @@ const AuthProvider: FC<AuthProviderProps> = ({
   const login = async (loginData: LoginData) => {
     try {
       console.log('login', loginData);
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(loginData),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/auth/login`,
+        {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(loginData),
+        }
+      );
       const authJwt = (await response.json()) as AuthJwt;
       const jwt = authJwt.jwt;
       const decodedToken = jwtDecode<AuthJwtPayload>(jwt);
