@@ -2,19 +2,14 @@ import { FC, useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 
 import './AuthDialog.css';
-import LoginForm from './LoginForm';
-import RegistrationForm from './RegistrationForm';
-import PasswordResetForm from './PasswordResetForm';
+import LoginForm from './login/LoginForm';
+import RegistrationForm from './registration/RegistrationForm';
+import PasswordResetForm from './password-reset/PasswordResetForm';
+import { AuthFormType } from './models/auth-form-type';
 
 interface AuthDialogProps {
   isAuthDialogOpened: boolean;
   onCloseAuthDialog: () => void;
-}
-
-enum AuthFormType {
-  LOGIN,
-  REGISTRATION,
-  PASSWORD_RESET,
 }
 
 const AuthDialog: FC<AuthDialogProps> = ({

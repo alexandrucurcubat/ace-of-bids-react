@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Button from '@material-ui/core/Button';
@@ -7,6 +7,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
+import { LoginData } from '../models/auth-form-data';
+import { AuthContext } from '../auth-context';
 
 interface LoginFromProps {
   onRegistrationMode: () => void;
@@ -18,8 +21,11 @@ const LoginForm: FC<LoginFromProps> = ({
   onPasswordResetMode,
 }) => {
   const { register, handleSubmit, errors } = useForm();
-  const onSubmit = (data: any) => {
-    console.log(data);
+  const { login } = useContext(AuthContext);
+
+  const onSubmit = (loginData: LoginData) => {
+    console.log(loginData);
+    login && login(loginData);
   };
 
   return (

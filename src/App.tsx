@@ -10,6 +10,7 @@ import Footer from './common/components/footer/Footer';
 import { DarkThemeContext } from './common/theme/theme-context';
 import { useStyles } from './common/theme/theming';
 import AuthDialog from './common/components/auth/AuthDialog';
+import AuthProvider from './common/components/auth/auth-context';
 
 function App() {
   const { theme } = useContext(DarkThemeContext);
@@ -26,24 +27,26 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Drawer onOpenAuthDialog={onOpenAuthDialog} />
-      <Header onOpenAuthDialog={onOpenAuthDialog} />
-      <Container fixed className={classes.appContainer}>
-        <Switch>
-          <Route path="/auctions/live">Licitații live</Route>
-          <Route path="/auctions/closed">Licitații închise</Route>
-          <Route path="/about">Despre noi</Route>
-          <Route path="/account">Contul meu</Route>
-          <Route path="/">
-            <Redirect to="/auctions/live" />
-          </Route>
-        </Switch>
-      </Container>
-      <Footer />
-      <AuthDialog
-        isAuthDialogOpened={isAuthDialogOpened}
-        onCloseAuthDialog={onCloseAuthDialog}
-      />
+      <AuthProvider>
+        <Drawer onOpenAuthDialog={onOpenAuthDialog} />
+        <Header onOpenAuthDialog={onOpenAuthDialog} />
+        <Container fixed className={classes.appContainer}>
+          <Switch>
+            <Route path="/auctions/live">Licitații live</Route>
+            <Route path="/auctions/closed">Licitații închise</Route>
+            <Route path="/about">Despre noi</Route>
+            <Route path="/account">Contul meu</Route>
+            <Route path="/">
+              <Redirect to="/auctions/live" />
+            </Route>
+          </Switch>
+        </Container>
+        <Footer />
+        <AuthDialog
+          isAuthDialogOpened={isAuthDialogOpened}
+          onCloseAuthDialog={onCloseAuthDialog}
+        />
+      </AuthProvider>
     </ThemeProvider>
   );
 }
