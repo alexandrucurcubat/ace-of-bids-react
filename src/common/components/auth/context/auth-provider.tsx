@@ -1,31 +1,31 @@
 import { FC, useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
 
+import AuthDialog from '../AuthDialog';
 import { AuthContext } from './auth-context';
 import { LoginData } from '../models/auth-form-data';
 import { AuthJwt, AuthJwtPayload } from '../models/auth-jwt';
-import { LOCAL_STORAGE } from '../../../local-storage';
+import { LOCAL_STORAGE } from '../../../models/local-storage';
+import { User } from '../../../models/user';
 import {
   expiresIn,
   getTokenExpirationDate,
   isTokenExpired,
 } from '../utils/jwt-helper';
-
-interface AuthProviderProps {
-  onCloseAuthDialog: () => void;
-}
+import { useHistory } from 'react-router-dom';
 
 let authTimer: NodeJS.Timer;
 
-const AuthProvider: FC<AuthProviderProps> = ({
-  children,
-  onCloseAuthDialog,
-}) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const AuthProvider: FC = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [loggedUser, setLoggedUser] = useState<User | null>(null);
+  const [isAuthDialogOpened, setAuthDialogOpened] = useState(false);
+  const history = useHistory();
 
-  const login = async (loginData: LoginData) => {
+  const onOpenAuthDialog = () => setAuthDialogOpened(true);
+  const onCloseAuthDialog = () => setAuthDialogOpened(false);
+  const onLogin = async (loginData: LoginData) => {
     try {
-      console.log('login', loginData);
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/auth/login`,
         {
@@ -40,15 +40,16 @@ const AuthProvider: FC<AuthProviderProps> = ({
       const expirationDate = getTokenExpirationDate(jwt);
       setAuthTimer(expirationDate);
       setIsLoggedIn(true);
+      setLoggedUser(decodedToken.user);
       onCloseAuthDialog();
       localStorage.setItem(LOCAL_STORAGE.JWT, jwt);
-      console.log(decodedToken);
+      history.push('/account');
     } catch (error) {
       console.log(error);
     }
+    console.log('login');
   };
-
-  const logout = () => {
+  const onLogout = () => {
     setIsLoggedIn(false);
     clearTimeout(authTimer);
     localStorage.removeItem(LOCAL_STORAGE.JWT);
@@ -57,7 +58,7 @@ const AuthProvider: FC<AuthProviderProps> = ({
 
   const setAuthTimer = (expirationDate: Date) => {
     authTimer = setTimeout(() => {
-      logout();
+      onLogout();
     }, expiresIn(expirationDate) * 1000);
   };
 
@@ -67,21 +68,37 @@ const AuthProvider: FC<AuthProviderProps> = ({
       if (localJwt && !isTokenExpired(localJwt)) {
         const decodedToken = jwtDecode<AuthJwtPayload>(localJwt);
         const expirationDate = getTokenExpirationDate(localJwt);
-        if (expiresIn(expirationDate) > 0) {
-          setIsLoggedIn(true);
-          authTimer = setTimeout(() => {
-            logout();
-          }, expiresIn(expirationDate) * 1000);
-        }
-        console.log(decodedToken);
+        setIsLoggedIn(true);
+        setLoggedUser(decodedToken.user);
+        authTimer = setTimeout(() => {
+          onLogout();
+        }, expiresIn(expirationDate) * 1000);
+      } else {
+        setIsLoggedIn(false);
+        setLoggedUser(null);
+        localStorage.removeItem(LOCAL_STORAGE.JWT);
       }
+      console.log('autoLogin');
     };
     autoLogin();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        isLoggedIn,
+        loggedUser,
+        onLogin,
+        onLogout,
+        onOpenAuthDialog,
+        onCloseAuthDialog,
+      }}
+    >
       {children}
+      <AuthDialog
+        isAuthDialogOpened={isAuthDialogOpened}
+        onCloseAuthDialog={() => setAuthDialogOpened(false)}
+      />
     </AuthContext.Provider>
   );
 };

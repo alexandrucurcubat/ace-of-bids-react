@@ -33,28 +33,24 @@ import { useStyles } from '../../theme/theming';
 import { DarkThemeContext } from '../../theme/theme-context';
 import { AuthContext } from '../auth/context/auth-context';
 
-interface DrawerProps {
-  onOpenAuthDialog: () => void;
-}
-
 const isIOS =
   (process as any).browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-const Drawer: FC<DrawerProps> = ({ onOpenAuthDialog }) => {
+const Drawer: FC = () => {
   const [isOpened, setIsOpened] = useState(false);
   const [showNestedAuctions, setShowNestedAuctions] = useState(false);
   const [showNestedAccount, setShowNestedAccount] = useState(false);
   const { isDarkMode, onSetDarkMode } = useContext(DarkThemeContext);
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { isLoggedIn, onLogout, onOpenAuthDialog } = useContext(AuthContext);
   const darkModeIcon = isDarkMode ? <Brightness5Icon /> : <Brightness4Icon />;
   const classes = useStyles();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('xs')
   );
 
-  const handleOpenAuthDialog = () => onOpenAuthDialog();
+  const handleOpenAuthDialog = () => onOpenAuthDialog && onOpenAuthDialog();
   const handleSetDarkMode = () => onSetDarkMode && onSetDarkMode(!isDarkMode);
-  const handleLogout = () => logout && logout();
+  const handleLogout = () => onLogout && onLogout();
   const handleNestedAuctions = () => setShowNestedAuctions(!showNestedAuctions);
   const handleNestedAccount = () => setShowNestedAccount(!showNestedAccount);
   const handleToggleDrawer = (isOpened: boolean) => (
@@ -96,7 +92,7 @@ const Drawer: FC<DrawerProps> = ({ onOpenAuthDialog }) => {
           <Collapse in={showNestedAuctions} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
               <Link
-                to="/auctions/live"
+                to="/auctions?status=live"
                 style={{ textDecoration: 'none', display: 'block' }}
                 onClick={handleToggleDrawer(false)}
               >
@@ -111,7 +107,7 @@ const Drawer: FC<DrawerProps> = ({ onOpenAuthDialog }) => {
                 </ListItem>
               </Link>
               <Link
-                to="/auctions/closed"
+                to="/auctions?status=closed"
                 style={{ textDecoration: 'none', display: 'block' }}
                 onClick={handleToggleDrawer(false)}
               >
@@ -119,7 +115,10 @@ const Drawer: FC<DrawerProps> = ({ onOpenAuthDialog }) => {
                   <ListItemIcon>
                     <Gavel />
                   </ListItemIcon>
-                  <ListItemText primary="Închise" />
+                  <ListItemText
+                    style={{ color: isDarkMode ? 'white' : 'black' }}
+                    primary="Închise"
+                  />
                 </ListItem>
               </Link>
             </List>

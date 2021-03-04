@@ -7,6 +7,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { InputAdornment } from '@material-ui/core';
+import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
+import Person from '@material-ui/icons/Person';
+import Lock from '@material-ui/icons/Lock';
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
 interface RegistrationFormProps {
   onLoginMode: () => void;
@@ -60,6 +65,13 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ onLoginMode }) => {
           })}
           error={errors.email ? true : false}
           helperText={errors.email && errors.email.message}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <AlternateEmailIcon />
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           margin="dense"
@@ -79,6 +91,13 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ onLoginMode }) => {
           })}
           error={errors.username ? true : false}
           helperText={errors.username && errors.username.message}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Person />
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           margin="dense"
@@ -98,6 +117,13 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ onLoginMode }) => {
           })}
           error={errors.password ? true : false}
           helperText={errors.password && errors.password.message}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Lock />
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           margin="dense"
@@ -115,6 +141,13 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ onLoginMode }) => {
           helperText={
             errors.passwordConfirmation && errors.passwordConfirmation.message
           }
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <VerifiedUserIcon />
+              </InputAdornment>
+            ),
+          }}
         />
       </DialogContent>
       <DialogActions className="auth-dialog-actions">

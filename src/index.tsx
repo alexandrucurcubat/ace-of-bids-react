@@ -5,13 +5,16 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import DarkThemeProvider from './common/theme/theme-context';
+import AuthProvider from './common/components/auth/context/auth-provider';
+import DarkThemeProvider from './common/theme/theme-provider';
 
 ReactDOM.render(
   <React.StrictMode>
     <DarkThemeProvider>
       <BrowserRouter>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </BrowserRouter>
     </DarkThemeProvider>
   </React.StrictMode>,

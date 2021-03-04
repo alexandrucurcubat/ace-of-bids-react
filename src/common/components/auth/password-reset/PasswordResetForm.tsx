@@ -7,6 +7,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { InputAdornment } from '@material-ui/core';
+import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 
 interface PasswordResetFormProps {
   onLoginMode: () => void;
@@ -45,6 +47,13 @@ const PasswordResetForm: FC<PasswordResetFormProps> = ({ onLoginMode }) => {
           })}
           error={errors.email ? true : false}
           helperText={errors.email && errors.email.message}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <AlternateEmailIcon />
+              </InputAdornment>
+            ),
+          }}
         />
       </DialogContent>
       <DialogActions className="auth-dialog-actions">

@@ -20,24 +20,22 @@ import { useStyles } from '../../theme/theming';
 import { DarkThemeContext } from '../../theme/theme-context';
 import { AuthContext } from '../auth/context/auth-context';
 
-interface HeaderProps {
-  onOpenAuthDialog: () => void;
-}
-
-const Header: FC<HeaderProps> = ({ onOpenAuthDialog }) => {
+const Header: FC = () => {
   const [auctionsMenu, setAuctionsMenu] = useState<null | HTMLElement>(null);
   const [accountMenu, setAccountMenu] = useState<null | HTMLElement>(null);
   const { isDarkMode, onSetDarkMode } = useContext(DarkThemeContext);
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { isLoggedIn, loggedUser, onLogout, onOpenAuthDialog } = useContext(
+    AuthContext
+  );
   const darkModeIcon = isDarkMode ? <Brightness5Icon /> : <Brightness4Icon />;
   const classes = useStyles();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('xs')
   );
 
-  const handleOpenAuthDialog = () => onOpenAuthDialog();
+  const handleOpenAuthDialog = () => onOpenAuthDialog && onOpenAuthDialog();
   const handleSetDarkMode = () => onSetDarkMode && onSetDarkMode(!isDarkMode);
-  const handleLogout = () => logout && logout();
+  const handleLogout = () => onLogout && onLogout();
   const handleAuctionsMenuClick = (event: MouseEvent<HTMLButtonElement>) =>
     setAuctionsMenu(event.currentTarget);
   const handleAccountMenuClick = (event: MouseEvent<HTMLButtonElement>) =>
@@ -69,7 +67,7 @@ const Header: FC<HeaderProps> = ({ onOpenAuthDialog }) => {
                 onClose={handleAuctionsMenuClose}
               >
                 <Link
-                  to="/auctions/live"
+                  to="/auctions?status=live"
                   style={{ textDecoration: 'none', display: 'block' }}
                 >
                   <MenuItem onClick={handleAuctionsMenuClose}>
@@ -80,14 +78,18 @@ const Header: FC<HeaderProps> = ({ onOpenAuthDialog }) => {
                   </MenuItem>
                 </Link>
                 <Link
-                  to="/auctions/closed"
+                  to="/auctions?status=closed"
                   style={{ textDecoration: 'none', display: 'block' }}
                 >
                   <MenuItem onClick={handleAuctionsMenuClose}>
                     <ListItemIcon className={classes.listItemIcon}>
                       <Gavel fontSize="small" />
                     </ListItemIcon>
-                    <Typography>Închise</Typography>
+                    <Typography
+                      style={{ color: isDarkMode ? 'white' : 'black' }}
+                    >
+                      Închise
+                    </Typography>
                   </MenuItem>
                 </Link>
               </Menu>
@@ -127,7 +129,7 @@ const Header: FC<HeaderProps> = ({ onOpenAuthDialog }) => {
                           className={classes.listItemIcon}
                           style={{ color: isDarkMode ? 'white' : 'black' }}
                         >
-                          Vezi contul
+                          {loggedUser?.username}
                         </Typography>
                       </MenuItem>
                     </Link>

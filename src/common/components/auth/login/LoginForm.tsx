@@ -7,6 +7,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { InputAdornment } from '@material-ui/core';
+import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
+import Lock from '@material-ui/icons/Lock';
 
 import { LoginData } from '../models/auth-form-data';
 import { AuthContext } from '../context/auth-context';
@@ -21,7 +24,7 @@ const LoginForm: FC<LoginFromProps> = ({
   onPasswordResetMode,
 }) => {
   const { register, handleSubmit, errors } = useForm();
-  const { login } = useContext(AuthContext);
+  const { onLogin: login } = useContext(AuthContext);
   const handleRegistrationMode = () => onRegistrationMode();
   const handlePasswordResetMode = () => onPasswordResetMode();
   const onSubmit = (loginData: LoginData) => login && login(loginData);
@@ -58,6 +61,13 @@ const LoginForm: FC<LoginFromProps> = ({
           })}
           error={errors.email ? true : false}
           helperText={errors.email && errors.email.message}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <AlternateEmailIcon />
+              </InputAdornment>
+            ),
+          }}
         />
         <TextField
           margin="dense"
@@ -73,6 +83,13 @@ const LoginForm: FC<LoginFromProps> = ({
           })}
           error={errors.password ? true : false}
           helperText={errors.password && errors.password.message}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Lock />
+              </InputAdornment>
+            ),
+          }}
         />
       </DialogContent>
       <DialogActions className="auth-dialog-actions">
