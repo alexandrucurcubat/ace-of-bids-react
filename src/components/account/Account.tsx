@@ -16,10 +16,10 @@ import './Account.css';
 import { AuthContext } from '../../context/AuthProvider';
 
 const Account: FC = () => {
-  const { loggedUser } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
   const { register, handleSubmit, errors, setError } = useForm({
     defaultValues: {
-      username: loggedUser?.username,
+      username: authState.loggedUser?.username,
       oldPassword: '',
       newPassword: '',
       confirmationPassword: '',
@@ -46,8 +46,8 @@ const Account: FC = () => {
               src={process.env.PUBLIC_URL + '/logo192.png'}
             ></Avatar>
           }
-          title={loggedUser?.username}
-          subheader={loggedUser?.email}
+          title={authState.loggedUser?.username}
+          subheader={authState.loggedUser?.email}
         />
         <CardContent>
           <TextField

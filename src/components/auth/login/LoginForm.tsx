@@ -12,6 +12,7 @@ import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import Lock from '@material-ui/icons/Lock';
 
 import { AuthContext } from '../../../context/AuthProvider';
+import { AppContext } from '../../../context/AppProvider';
 import { ILoginData } from '../../../models/form-data-login.interface';
 
 interface LoginFromProps {
@@ -24,10 +25,11 @@ const LoginForm: FC<LoginFromProps> = ({
   onPasswordResetMode,
 }) => {
   const { register, handleSubmit, errors } = useForm();
-  const { onLogin, isLoading, error } = useContext(AuthContext);
+  const { onLogin } = useContext(AuthContext);
+  const { appState } = useContext(AppContext);
   const handleRegistrationMode = () => onRegistrationMode();
   const handlePasswordResetMode = () => onPasswordResetMode();
-  const onSubmit = (loginData: ILoginData) => onLogin && onLogin(loginData);
+  const onSubmit = (loginData: ILoginData) => onLogin(loginData);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -92,14 +94,14 @@ const LoginForm: FC<LoginFromProps> = ({
           }}
         />
       </DialogContent>
-      {error && <span className="error">Email sau parolă incorectă</span>}
+      {appState.error && <span className="error">{appState.error}</span>}
       <DialogActions className="auth-dialog-actions">
         <Button
           type="submit"
           className="btn-submit"
           variant="contained"
           color="primary"
-          disabled={isLoading}
+          disabled={appState.isLoading}
         >
           Conectare
         </Button>

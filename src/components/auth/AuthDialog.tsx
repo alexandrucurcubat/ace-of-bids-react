@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 
 import './AuthDialog.css';
@@ -6,11 +6,8 @@ import LoginForm from './login/LoginForm';
 import RegistrationForm from './registration/RegistrationForm';
 import PasswordResetForm from './password-reset/PasswordResetForm';
 import { FormType } from '../../models/form-type.enum';
-
-interface AuthDialogProps {
-  isAuthDialogOpened: boolean;
-  onCloseAuthDialog: () => void;
-}
+import { AuthContext } from '../../context/AuthProvider';
+import { AuthActions } from '../../context/actions/auth-actions';
 
 const renderFormByType = ({
   handleRegistrationMode,
@@ -29,13 +26,11 @@ const renderFormByType = ({
   ),
 });
 
-const AuthDialog: FC<AuthDialogProps> = ({
-  isAuthDialogOpened,
-  onCloseAuthDialog,
-}) => {
+const AuthDialog: FC = () => {
   const [formType, setFormType] = useState(FormType.LOGIN);
+  const { authState, authDispatch } = useContext(AuthContext);
 
-  const handleCloseAuthDialog = () => onCloseAuthDialog();
+  const handleCloseAuthDialog = () => AuthActions.closeAuthDialog(authDispatch);
   const handleLoginMode = () => setFormType(FormType.LOGIN);
   const handleRegistrationMode = () => setFormType(FormType.REGISTRATION);
   const handlePasswordResetMode = () => setFormType(FormType.PASSWORD_RESET);
@@ -43,7 +38,7 @@ const AuthDialog: FC<AuthDialogProps> = ({
   return (
     <Dialog
       className={'auth-dialog'}
-      open={isAuthDialogOpened}
+      open={authState.isAuthDialogOpened}
       onClose={handleCloseAuthDialog}
     >
       {

@@ -32,6 +32,8 @@ import './Drawer.css';
 import { useStyles } from '../../theming';
 import { DarkThemeContext } from '../../context/ThemeProvider';
 import { AuthContext } from '../../context/AuthProvider';
+import { ThemeActions } from '../../context/actions/theme-actions';
+import { AuthActions } from '../../context/actions/auth-actions';
 
 const isIOS =
   (process as any).browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -40,17 +42,15 @@ const Drawer: FC = () => {
   const [isOpened, setIsOpened] = useState(false);
   const [showNestedAuctions, setShowNestedAuctions] = useState(false);
   const [showNestedAccount, setShowNestedAccount] = useState(false);
-  const { isDarkMode, onSetDarkMode } = useContext(DarkThemeContext);
-  const { isLoggedIn, onLogout, onOpenAuthDialog } = useContext(AuthContext);
-  const darkModeIcon = isDarkMode ? <Brightness5Icon /> : <Brightness4Icon />;
+  const { themeState, themeDispatch } = useContext(DarkThemeContext);
+  const { authState, authDispatch, onLogout } = useContext(AuthContext);
   const classes = useStyles();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('xs')
   );
 
-  const handleOpenAuthDialog = () => onOpenAuthDialog && onOpenAuthDialog();
-  const handleSetDarkMode = () => onSetDarkMode && onSetDarkMode(!isDarkMode);
-  const handleLogout = () => onLogout && onLogout();
+  const handleOpenAuthDialog = () => AuthActions.openAuthDialog(authDispatch);
+  const handleLogout = () => onLogout();
   const handleNestedAuctions = () => setShowNestedAuctions(!showNestedAuctions);
   const handleNestedAccount = () => setShowNestedAccount(!showNestedAccount);
   const handleToggleDrawer = (isOpened: boolean) => (
@@ -66,6 +66,8 @@ const Drawer: FC = () => {
     }
     setIsOpened(isOpened);
   };
+  const handleSetDarkMode = () =>
+    ThemeActions.setDarkMode(themeDispatch, !themeState.isDarkMode);
 
   useEffect(() => {
     isOpened && setIsOpened(isMobile);
@@ -116,7 +118,7 @@ const Drawer: FC = () => {
                     <Gavel />
                   </ListItemIcon>
                   <ListItemText
-                    style={{ color: isDarkMode ? 'white' : 'black' }}
+                    style={{ color: themeState.isDarkMode ? 'white' : 'black' }}
                     primary="Închise"
                   />
                 </ListItem>
@@ -128,7 +130,7 @@ const Drawer: FC = () => {
             style={{
               textDecoration: 'none',
               display: 'block',
-              color: isDarkMode ? 'white' : 'black',
+              color: themeState.isDarkMode ? 'white' : 'black',
             }}
             onClick={handleToggleDrawer(false)}
           >
@@ -139,7 +141,7 @@ const Drawer: FC = () => {
               <ListItemText primary="Despre noi" />
             </ListItem>
           </Link>
-          {isLoggedIn ? (
+          {authState.isLoggedIn ? (
             <>
               <ListItem button onClick={handleNestedAccount}>
                 <ListItemIcon>
@@ -161,7 +163,9 @@ const Drawer: FC = () => {
                       </ListItemIcon>
                       <ListItemText
                         primary="Vezi contul"
-                        style={{ color: isDarkMode ? 'white' : 'black' }}
+                        style={{
+                          color: themeState.isDarkMode ? 'white' : 'black',
+                        }}
                       />
                     </ListItem>
                   </Link>
@@ -191,10 +195,18 @@ const Drawer: FC = () => {
             </div>
           )}
           <ListItem button onClick={handleSetDarkMode}>
-            <ListItemIcon className={isDarkMode ? classes.secondary : ''}>
-              {darkModeIcon}
+            <ListItemIcon
+              className={themeState.isDarkMode ? classes.secondary : ''}
+            >
+              {themeState.isDarkMode ? (
+                <Brightness5Icon />
+              ) : (
+                <Brightness4Icon />
+              )}
             </ListItemIcon>
-            <ListItemText primary={isDarkMode ? 'Mod zi' : 'Mod noapte'} />
+            <ListItemText
+              primary={themeState.isDarkMode ? 'Mod zi' : 'Mod noapte'}
+            />
           </ListItem>
         </List>
       </SwipeableDrawer>

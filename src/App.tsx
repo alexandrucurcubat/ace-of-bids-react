@@ -6,7 +6,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 import './App.css';
 import { useStyles } from './theming';
-import { AuthContext } from './context/AuthProvider';
+import { AppContext } from './context/AppProvider';
 import { DarkThemeContext } from './context/ThemeProvider';
 import Drawer from './components/drawer/Drawer';
 import Header from './components/header/Header';
@@ -18,16 +18,16 @@ import Account from './components/account/Account';
 const useQuery = () => new URLSearchParams(useLocation().search);
 
 function App() {
-  const { theme } = useContext(DarkThemeContext);
-  const { isLoading } = useContext(AuthContext);
+  const { appState } = useContext(AppContext);
+  const { themeState } = useContext(DarkThemeContext);
   const classes = useStyles();
   const queryParams = useQuery();
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={themeState.theme}>
       <CssBaseline />
       <Drawer />
-      {isLoading && <LinearProgress className={classes.appLoader} />}
+      {appState.isLoading && <LinearProgress className={classes.appLoader} />}
       <Header />
       <Container fixed className={classes.appContainer}>
         <Switch>

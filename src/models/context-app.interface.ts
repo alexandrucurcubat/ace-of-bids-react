@@ -1,4 +1,6 @@
+import { IAppState } from '../context/reducers/app-reducer';
+
 export interface IAppContext {
-  isLoading?: boolean;
-  onSetIsLoading?: (isLoading: boolean) => void;
+  appState: IAppState;
+  appDispatch: any;
 }

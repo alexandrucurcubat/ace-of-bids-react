@@ -1,7 +1,6 @@
-import { Theme } from '@material-ui/core';
+import { IThemeState } from '../context/reducers/theme-reducer';
 
 export interface IThemeContext {
-  theme: Theme;
-  isDarkMode: boolean;
-  onSetDarkMode?: (isDarkMode: boolean) => void;
+  themeState: IThemeState;
+  themeDispatch: any;
 }

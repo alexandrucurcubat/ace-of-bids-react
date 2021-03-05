@@ -19,29 +19,29 @@ import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import { useStyles } from '../../theming';
 import { DarkThemeContext } from '../../context/ThemeProvider';
 import { AuthContext } from '../../context/AuthProvider';
+import { ThemeActions } from '../../context/actions/theme-actions';
+import { AuthActions } from '../../context/actions/auth-actions';
 
 const Header: FC = () => {
   const [auctionsMenu, setAuctionsMenu] = useState<null | HTMLElement>(null);
   const [accountMenu, setAccountMenu] = useState<null | HTMLElement>(null);
-  const { isDarkMode, onSetDarkMode } = useContext(DarkThemeContext);
-  const { isLoggedIn, loggedUser, onLogout, onOpenAuthDialog } = useContext(
-    AuthContext
-  );
-  const darkModeIcon = isDarkMode ? <Brightness5Icon /> : <Brightness4Icon />;
+  const { themeState, themeDispatch } = useContext(DarkThemeContext);
+  const { authState, authDispatch, onLogout } = useContext(AuthContext);
   const classes = useStyles();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('xs')
   );
 
-  const handleOpenAuthDialog = () => onOpenAuthDialog && onOpenAuthDialog();
-  const handleSetDarkMode = () => onSetDarkMode && onSetDarkMode(!isDarkMode);
-  const handleLogout = () => onLogout && onLogout();
+  const handleOpenAuthDialog = () => AuthActions.openAuthDialog(authDispatch);
+  const handleLogout = () => onLogout();
   const handleAuctionsMenuClick = (event: MouseEvent<HTMLButtonElement>) =>
     setAuctionsMenu(event.currentTarget);
   const handleAccountMenuClick = (event: MouseEvent<HTMLButtonElement>) =>
     setAccountMenu(event.currentTarget);
   const handleAuctionsMenuClose = () => setAuctionsMenu(null);
   const handleAccountMenuClose = () => setAccountMenu(null);
+  const handleSetDarkMode = () =>
+    ThemeActions.setDarkMode(themeDispatch, !themeState.isDarkMode);
 
   return (
     <>
@@ -86,7 +86,9 @@ const Header: FC = () => {
                       <Gavel fontSize="small" />
                     </ListItemIcon>
                     <Typography
-                      style={{ color: isDarkMode ? 'white' : 'black' }}
+                      style={{
+                        color: themeState.isDarkMode ? 'white' : 'black',
+                      }}
                     >
                       Închise
                     </Typography>
@@ -100,7 +102,7 @@ const Header: FC = () => {
               >
                 Despre noi
               </Button>
-              {isLoggedIn ? (
+              {authState.isLoggedIn ? (
                 <>
                   <Button
                     color="primary"
@@ -127,9 +129,11 @@ const Header: FC = () => {
                         </ListItemIcon>
                         <Typography
                           className={classes.listItemIcon}
-                          style={{ color: isDarkMode ? 'white' : 'black' }}
+                          style={{
+                            color: themeState.isDarkMode ? 'white' : 'black',
+                          }}
                         >
-                          {loggedUser?.username}
+                          {authState.loggedUser?.username}
                         </Typography>
                       </MenuItem>
                     </Link>
@@ -155,11 +159,15 @@ const Header: FC = () => {
 
               <IconButton
                 edge="end"
-                color={isDarkMode ? 'secondary' : 'inherit'}
+                color={themeState.isDarkMode ? 'secondary' : 'inherit'}
                 aria-label="mode"
                 onClick={handleSetDarkMode}
               >
-                {darkModeIcon}
+                {themeState.isDarkMode ? (
+                  <Brightness5Icon />
+                ) : (
+                  <Brightness4Icon />
+                )}
               </IconButton>
             </>
           )}

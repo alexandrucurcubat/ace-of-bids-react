@@ -1,30 +1,33 @@
-import { createContext, FC, useState } from 'react';
+import { createContext, FC, useReducer } from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 
 import { LocalStorage } from '../models/local-storage.enum';
 import { IThemeContext } from '../models/context-theme.interface';
 import { DARK_THEME, LIGHT_THEME } from '../theming';
+import { IThemeState, themeReducer } from './reducers/theme-reducer';
 
 const localIsDarkMode =
   localStorage.getItem(LocalStorage.IS_DARK_MODE) === 'true' || false;
 
-export const DarkThemeContext = createContext<IThemeContext>({
+const initialThemeState: IThemeState = {
+  isDarkMode: localIsDarkMode,
   theme: localIsDarkMode ? DARK_THEME : LIGHT_THEME,
-  isDarkMode: false,
+};
+
+export const DarkThemeContext = createContext<IThemeContext>({
+  themeState: initialThemeState,
+  themeDispatch: () => {},
 });
 
 const DarkThemeProvider: FC = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(localIsDarkMode);
-  const theme = isDarkMode ? DARK_THEME : LIGHT_THEME;
-
-  const onSetDarkMode = (isDarkMode: boolean) => {
-    setIsDarkMode(isDarkMode);
-    localStorage.setItem(LocalStorage.IS_DARK_MODE, String(isDarkMode));
-  };
+  const [themeState, themeDispatch] = useReducer(
+    themeReducer,
+    initialThemeState
+  );
 
   return (
-    <DarkThemeContext.Provider value={{ theme, isDarkMode, onSetDarkMode }}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    <DarkThemeContext.Provider value={{ themeState, themeDispatch }}>
+      <ThemeProvider theme={themeState.theme}>{children}</ThemeProvider>
     </DarkThemeContext.Provider>
   );
 };

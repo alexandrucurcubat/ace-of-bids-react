@@ -1,16 +1,25 @@
-import { createContext, FC, useState } from 'react';
+import { createContext, FC, useReducer } from 'react';
 
 import { IAppContext } from '../models/context-app.interface';
+import { appReducer, IAppState } from './reducers/app-reducer';
+
+const initialAppState: IAppState = {
+  isLoading: false,
+  error: null,
+};
 
 export const AppContext = createContext<IAppContext>({
-  isLoading: false,
+  appState: initialAppState,
+  appDispatch: () => {},
 });
 
 const AppProvider: FC = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [appState, appDispatch] = useReducer(appReducer, initialAppState);
 
   return (
-    <AppContext.Provider value={{ isLoading }}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{ appState, appDispatch }}>
+      {children}
+    </AppContext.Provider>
   );
 };
 

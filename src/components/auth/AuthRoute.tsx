@@ -5,12 +5,12 @@ import { AuthContext } from '../../context/AuthProvider';
 import { LocalStorage } from '../../models/local-storage.enum';
 
 const AuthRoute: FC<{ path: string }> = ({ children, ...props }) => {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { authState } = useContext(AuthContext);
   return (
     <Route
       {...props}
       render={({ location }) => {
-        if (isLoggedIn) {
+        if (authState.isLoggedIn) {
           return <>{children}</>;
         } else if (!localStorage.getItem(LocalStorage.JWT)) {
           return (

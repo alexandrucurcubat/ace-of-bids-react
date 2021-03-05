@@ -7,16 +7,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import DarkThemeProvider from './context/ThemeProvider';
 import AuthProvider from './context/AuthProvider';
+import AppProvider from './context/AppProvider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <DarkThemeProvider>
-      <BrowserRouter>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </BrowserRouter>
-    </DarkThemeProvider>
+    <BrowserRouter>
+      <DarkThemeProvider>
+        <AppProvider>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </AppProvider>
+      </DarkThemeProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );

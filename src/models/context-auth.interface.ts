@@ -1,13 +1,9 @@
+import { IAuthState } from '../context/reducers/auth-reducer';
 import { ILoginData } from './form-data-login.interface';
-import { IUser } from './user.interface';
 
 export interface IAuthContext {
-  isLoggedIn: boolean;
-  loggedUser: IUser | null;
-  error: string | null;
-  isLoading?: boolean;
-  onLogin?: (loginData: ILoginData) => void;
-  onLogout?: () => void;
-  onOpenAuthDialog?: () => void;
-  onCloseAuthDialog?: () => void;
+  authState: IAuthState;
+  authDispatch: any;
+  onLogin: (loginData: ILoginData) => void;
+  onLogout: () => void;
 }
