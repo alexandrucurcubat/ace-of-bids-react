@@ -2,21 +2,24 @@ import { useContext } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import './App.css';
-import { DarkThemeContext } from './common/theme/theme-context';
-import { useStyles } from './common/theme/theming';
-import Drawer from './common/components/drawer/Drawer';
-import Header from './common/components/header/Header';
-import Footer from './common/components/footer/Footer';
-import AuthRoute from './common/components/auth/AuthRoute';
-import Auctions from './common/components/auctions/Auctions';
-import Account from './common/components/account/Account';
+import { useStyles } from './theming';
+import { AuthContext } from './context/AuthProvider';
+import { DarkThemeContext } from './context/ThemeProvider';
+import Drawer from './components/drawer/Drawer';
+import Header from './components/header/Header';
+import Footer from './components/footer/Footer';
+import AuthRoute from './components/auth/AuthRoute';
+import Auctions from './components/auctions/Auctions';
+import Account from './components/account/Account';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
 function App() {
   const { theme } = useContext(DarkThemeContext);
+  const { isLoading } = useContext(AuthContext);
   const classes = useStyles();
   const queryParams = useQuery();
 
@@ -24,6 +27,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Drawer />
+      {isLoading && <LinearProgress className={classes.appLoader} />}
       <Header />
       <Container fixed className={classes.appContainer}>
         <Switch>
