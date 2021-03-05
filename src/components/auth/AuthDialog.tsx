@@ -7,7 +7,7 @@ import RegistrationForm from './registration/RegistrationForm';
 import PasswordResetForm from './password-reset/PasswordResetForm';
 import { FormType } from '../../models/form-type.enum';
 import { AuthContext } from '../../context/AuthProvider';
-import { AuthActions } from '../../context/actions/auth-actions';
+import { closeAuthDialog } from '../../context/actions/auth-actions';
 
 const renderFormByType = ({
   handleRegistrationMode,
@@ -30,7 +30,7 @@ const AuthDialog: FC = () => {
   const [formType, setFormType] = useState(FormType.LOGIN);
   const { authState, authDispatch } = useContext(AuthContext);
 
-  const handleCloseAuthDialog = () => AuthActions.closeAuthDialog(authDispatch);
+  const handleCloseAuthDialog = () => closeAuthDialog(authDispatch);
   const handleLoginMode = () => setFormType(FormType.LOGIN);
   const handleRegistrationMode = () => setFormType(FormType.REGISTRATION);
   const handlePasswordResetMode = () => setFormType(FormType.PASSWORD_RESET);

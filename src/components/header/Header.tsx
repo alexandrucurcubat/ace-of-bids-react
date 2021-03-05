@@ -19,8 +19,8 @@ import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import { useStyles } from '../../theming';
 import { DarkThemeContext } from '../../context/ThemeProvider';
 import { AuthContext } from '../../context/AuthProvider';
-import { ThemeActions } from '../../context/actions/theme-actions';
-import { AuthActions } from '../../context/actions/auth-actions';
+import { setDarkMode } from '../../context/actions/theme-actions';
+import { openAuthDialog } from '../../context/actions/auth-actions';
 
 const Header: FC = () => {
   const [auctionsMenu, setAuctionsMenu] = useState<null | HTMLElement>(null);
@@ -32,7 +32,7 @@ const Header: FC = () => {
     theme.breakpoints.down('xs')
   );
 
-  const handleOpenAuthDialog = () => AuthActions.openAuthDialog(authDispatch);
+  const handleOpenAuthDialog = () => openAuthDialog(authDispatch);
   const handleLogout = () => onLogout();
   const handleAuctionsMenuClick = (event: MouseEvent<HTMLButtonElement>) =>
     setAuctionsMenu(event.currentTarget);
@@ -41,7 +41,7 @@ const Header: FC = () => {
   const handleAuctionsMenuClose = () => setAuctionsMenu(null);
   const handleAccountMenuClose = () => setAccountMenu(null);
   const handleSetDarkMode = () =>
-    ThemeActions.setDarkMode(themeDispatch, !themeState.isDarkMode);
+    setDarkMode(themeDispatch, !themeState.isDarkMode);
 
   return (
     <>

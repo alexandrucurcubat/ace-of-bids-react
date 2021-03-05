@@ -32,8 +32,8 @@ import './Drawer.css';
 import { useStyles } from '../../theming';
 import { DarkThemeContext } from '../../context/ThemeProvider';
 import { AuthContext } from '../../context/AuthProvider';
-import { ThemeActions } from '../../context/actions/theme-actions';
-import { AuthActions } from '../../context/actions/auth-actions';
+import { setDarkMode } from '../../context/actions/theme-actions';
+import { openAuthDialog } from '../../context/actions/auth-actions';
 
 const isIOS =
   (process as any).browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -49,7 +49,7 @@ const Drawer: FC = () => {
     theme.breakpoints.down('xs')
   );
 
-  const handleOpenAuthDialog = () => AuthActions.openAuthDialog(authDispatch);
+  const handleOpenAuthDialog = () => openAuthDialog(authDispatch);
   const handleLogout = () => onLogout();
   const handleNestedAuctions = () => setShowNestedAuctions(!showNestedAuctions);
   const handleNestedAccount = () => setShowNestedAccount(!showNestedAccount);
@@ -67,7 +67,7 @@ const Drawer: FC = () => {
     setIsOpened(isOpened);
   };
   const handleSetDarkMode = () =>
-    ThemeActions.setDarkMode(themeDispatch, !themeState.isDarkMode);
+    setDarkMode(themeDispatch, !themeState.isDarkMode);
 
   useEffect(() => {
     isOpened && setIsOpened(isMobile);
