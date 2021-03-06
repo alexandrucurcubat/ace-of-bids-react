@@ -44,8 +44,8 @@ const AuthProvider: FC = ({ children }) => {
 
   const onLogin = async (loginData: ILoginData) => {
     try {
-      setIsLoading(appDispatch, true);
-      setError(appDispatch, null);
+      appDispatch(setIsLoading(true));
+      appDispatch(setError(null));
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/auth/login`,
         {
@@ -54,18 +54,18 @@ const AuthProvider: FC = ({ children }) => {
           body: JSON.stringify(loginData),
         }
       );
-      setIsLoading(appDispatch, false);
+      appDispatch(setIsLoading(false));
       if (response.status >= 400 && response.status < 600) {
-        setError(appDispatch, response.statusText);
+        appDispatch(setError(response.statusText));
         throw new Error(response.statusText);
       }
       const jwt = ((await response.json()) as IJwtResponse).jwt;
       const decodedToken = jwtDecode<IJwtPayload>(jwt);
       const expirationDate = getTokenExpirationDate(jwt);
       setAuthTimer(expirationDate);
-      setIsLoggedIn(authDispatch, true);
-      setLoggedUser(authDispatch, decodedToken.user);
-      closeAuthDialog(authDispatch);
+      authDispatch(setIsLoggedIn(true));
+      authDispatch(setLoggedUser(decodedToken.user));
+      authDispatch(closeAuthDialog());
       localStorage.setItem(LocalStorage.JWT, jwt);
       history.push('/account');
     } catch (error) {
@@ -74,8 +74,8 @@ const AuthProvider: FC = ({ children }) => {
     console.log('login');
   };
   const onLogout = () => {
-    setIsLoggedIn(authDispatch, false);
-    setLoggedUser(authDispatch, null);
+    authDispatch(setIsLoggedIn(false));
+    authDispatch(setLoggedUser(null));
     clearTimeout(authTimer);
     localStorage.removeItem(LocalStorage.JWT);
     console.log('logout');
@@ -92,14 +92,14 @@ const AuthProvider: FC = ({ children }) => {
     if (localJwt && !isTokenExpired(localJwt)) {
       const decodedToken = jwtDecode<IJwtPayload>(localJwt);
       const expirationDate = getTokenExpirationDate(localJwt);
-      setIsLoggedIn(authDispatch, true);
-      setLoggedUser(authDispatch, decodedToken.user);
+      authDispatch(setIsLoggedIn(true));
+      authDispatch(setLoggedUser(decodedToken.user));
       authTimer = setTimeout(() => {
         onLogout();
       }, expiresIn(expirationDate) * 1000);
     } else {
-      setIsLoggedIn(authDispatch, false);
-      setLoggedUser(authDispatch, null);
+      authDispatch(setIsLoggedIn(false));
+      authDispatch(setLoggedUser(null));
       localStorage.removeItem(LocalStorage.JWT);
     }
     console.log('autoLogin');

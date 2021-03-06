@@ -1,23 +1,28 @@
 import { IUser } from '../../models/user.interface';
-import {
-  CLOSE_AUTH_DIALOG,
-  OPEN_AUTH_DIALOG,
-  SET_IS_LOGGED_IN,
-  SET_LOGGED_USER,
-} from '../reducers/auth-reducer';
 
-export const setLoggedUser = (dispatch: any, loggedUser: IUser | null) => {
-  return dispatch({ type: SET_LOGGED_USER, loggedUser });
+export const SET_LOGGED_USER = '[AUTH] SET LOGGED USER';
+export const SET_IS_LOGGED_IN = '[AUTH] SET IS LOGGED IN';
+export const OPEN_AUTH_DIALOG = '[AUTH] OPEN AUTH DIALOG';
+export const CLOSE_AUTH_DIALOG = '[AUTH] CLOSE AUTH DIALOG';
+
+export const setLoggedUser = (loggedUser: IUser | null): AuthAction => {
+  return { type: SET_LOGGED_USER, loggedUser };
 };
 
-export const setIsLoggedIn = (dispatch: any, isLoggedIn: boolean) => {
-  return dispatch({ type: SET_IS_LOGGED_IN, isLoggedIn });
+export const setIsLoggedIn = (isLoggedIn: boolean): AuthAction => {
+  return { type: SET_IS_LOGGED_IN, isLoggedIn };
 };
 
-export const openAuthDialog = (dispatch: any) => {
-  return dispatch({ type: OPEN_AUTH_DIALOG });
+export const openAuthDialog = (): AuthAction => {
+  return { type: OPEN_AUTH_DIALOG };
 };
 
-export const closeAuthDialog = (dispatch: any) => {
-  return dispatch({ type: CLOSE_AUTH_DIALOG });
+export const closeAuthDialog = (): AuthAction => {
+  return { type: CLOSE_AUTH_DIALOG };
 };
+
+export type AuthAction =
+  | { type: '[AUTH] SET IS LOGGED IN'; isLoggedIn: boolean }
+  | { type: '[AUTH] SET LOGGED USER'; loggedUser: IUser | null }
+  | { type: '[AUTH] OPEN AUTH DIALOG' }
+  | { type: '[AUTH] CLOSE AUTH DIALOG' };

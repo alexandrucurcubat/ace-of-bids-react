@@ -30,7 +30,7 @@ const AuthDialog: FC = () => {
   const [formType, setFormType] = useState(FormType.LOGIN);
   const { authState, authDispatch } = useContext(AuthContext);
 
-  const handleCloseAuthDialog = () => closeAuthDialog(authDispatch);
+  const handleCloseAuthDialog = () => authDispatch(closeAuthDialog());
   const handleLoginMode = () => setFormType(FormType.LOGIN);
   const handleRegistrationMode = () => setFormType(FormType.REGISTRATION);
   const handlePasswordResetMode = () => setFormType(FormType.PASSWORD_RESET);

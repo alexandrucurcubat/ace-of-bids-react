@@ -1,3 +1,10 @@
+import {
+  AuthAction,
+  CLOSE_AUTH_DIALOG,
+  OPEN_AUTH_DIALOG,
+  SET_IS_LOGGED_IN,
+  SET_LOGGED_USER,
+} from '../actions/auth-actions';
 import { IUser } from '../../models/user.interface';
 
 export interface IAuthState {
@@ -6,12 +13,7 @@ export interface IAuthState {
   isAuthDialogOpened: boolean;
 }
 
-export const SET_LOGGED_USER = '[AUTH] SET LOGGED USER';
-export const SET_IS_LOGGED_IN = '[AUTH] SET IS LOGGED IN';
-export const OPEN_AUTH_DIALOG = '[AUTH] OPEN AUTH DIALOG';
-export const CLOSE_AUTH_DIALOG = '[AUTH] CLOSE AUTH DIALOG';
-
-export const authReducer = (state: IAuthState, action: Action) => {
+export const authReducer = (state: IAuthState, action: AuthAction) => {
   switch (action.type) {
     case SET_LOGGED_USER:
       return { ...state, loggedUser: action.loggedUser };
@@ -25,9 +27,3 @@ export const authReducer = (state: IAuthState, action: Action) => {
       return state;
   }
 };
-
-type Action =
-  | { type: '[AUTH] SET IS LOGGED IN'; isLoggedIn: boolean }
-  | { type: '[AUTH] SET LOGGED USER'; loggedUser: IUser | null }
-  | { type: '[AUTH] OPEN AUTH DIALOG' }
-  | { type: '[AUTH] CLOSE AUTH DIALOG' };

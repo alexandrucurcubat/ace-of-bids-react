@@ -49,7 +49,7 @@ const Drawer: FC = () => {
     theme.breakpoints.down('xs')
   );
 
-  const handleOpenAuthDialog = () => openAuthDialog(authDispatch);
+  const handleOpenAuthDialog = () => authDispatch(openAuthDialog());
   const handleLogout = () => onLogout();
   const handleNestedAuctions = () => setShowNestedAuctions(!showNestedAuctions);
   const handleNestedAccount = () => setShowNestedAccount(!showNestedAccount);
@@ -67,7 +67,7 @@ const Drawer: FC = () => {
     setIsOpened(isOpened);
   };
   const handleSetDarkMode = () =>
-    setDarkMode(themeDispatch, !themeState.isDarkMode);
+    themeDispatch(setDarkMode(!themeState.isDarkMode));
 
   useEffect(() => {
     isOpened && setIsOpened(isMobile);

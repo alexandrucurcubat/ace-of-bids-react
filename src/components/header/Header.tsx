@@ -32,7 +32,7 @@ const Header: FC = () => {
     theme.breakpoints.down('xs')
   );
 
-  const handleOpenAuthDialog = () => openAuthDialog(authDispatch);
+  const handleOpenAuthDialog = () => authDispatch(openAuthDialog());
   const handleLogout = () => onLogout();
   const handleAuctionsMenuClick = (event: MouseEvent<HTMLButtonElement>) =>
     setAuctionsMenu(event.currentTarget);
@@ -41,7 +41,7 @@ const Header: FC = () => {
   const handleAuctionsMenuClose = () => setAuctionsMenu(null);
   const handleAccountMenuClose = () => setAccountMenu(null);
   const handleSetDarkMode = () =>
-    setDarkMode(themeDispatch, !themeState.isDarkMode);
+    themeDispatch(setDarkMode(!themeState.isDarkMode));
 
   return (
     <>

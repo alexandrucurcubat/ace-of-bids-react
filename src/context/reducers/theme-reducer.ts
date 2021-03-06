@@ -1,5 +1,6 @@
 import { Theme } from '@material-ui/core';
 
+import { SET_DARK_MODE, ThemeAction } from '../actions/theme-actions';
 import { LocalStorage } from '../../models/local-storage.enum';
 import { DARK_THEME, LIGHT_THEME } from '../../theming';
 
@@ -8,9 +9,7 @@ export interface IThemeState {
   theme: Theme;
 }
 
-export const SET_DARK_MODE = '[THEME] SET DARK MODE';
-
-export const themeReducer = (state: IThemeState, action: Action) => {
+export const themeReducer = (state: IThemeState, action: ThemeAction) => {
   switch (action.type) {
     case SET_DARK_MODE:
       return setDarkMode(state, action.isDarkMode);
@@ -27,5 +26,3 @@ const setDarkMode = (state: IThemeState, isDarkMode: boolean) => {
     theme: isDarkMode ? DARK_THEME : LIGHT_THEME,
   };
 };
-
-type Action = { type: '[THEME] SET DARK MODE'; isDarkMode: boolean };
