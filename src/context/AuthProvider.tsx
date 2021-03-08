@@ -1,6 +1,18 @@
-import { createContext, FC, useContext, useEffect, useReducer } from 'react';
+import {
+  createContext,
+  FC,
+  MouseEvent,
+  SyntheticEvent,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import AuthDialog from '../components/auth/AuthDialog';
 import { LocalStorage } from '../models/local-storage.enum';
@@ -8,6 +20,7 @@ import { IJwtResponse } from '../models/jwt-response.interface';
 import { IJwtPayload } from '../models/jwt-payload.interface';
 import { ILoginData } from '../models/form-data-login.interface';
 import { IAuthContext } from '../models/context-auth.interface';
+import { IRegistrationData } from '../models/form-data-registration.interface';
 import {
   expiresIn,
   getTokenExpirationDate,
@@ -35,9 +48,11 @@ export const AuthContext = createContext<IAuthContext>({
   authDispatch: () => {},
   onLogin: () => {},
   onLogout: () => {},
+  onRegister: () => {},
 });
 
 const AuthProvider: FC = ({ children }) => {
+  const [isSnackbarOpened, setIsSnackbarOpened] = useState(false);
   const [authState, authDispatch] = useReducer(authReducer, initialAuthState);
   const { appDispatch } = useContext(AppContext);
   const history = useHistory();
@@ -56,8 +71,9 @@ const AuthProvider: FC = ({ children }) => {
       );
       appDispatch(setIsLoading(false));
       if (response.status >= 400 && response.status < 600) {
-        appDispatch(setError(response.statusText));
-        throw new Error(response.statusText);
+        const responseMessage = (await response.json()).message;
+        appDispatch(setError(responseMessage));
+        throw new Error(responseMessage);
       }
       const jwt = ((await response.json()) as IJwtResponse).jwt;
       const decodedToken = jwtDecode<IJwtPayload>(jwt);
@@ -71,20 +87,54 @@ const AuthProvider: FC = ({ children }) => {
     } catch (error) {
       console.log(error);
     }
-    console.log('login');
   };
+
+  const onRegister = async (registrationData: IRegistrationData) => {
+    try {
+      appDispatch(setIsLoading(true));
+      appDispatch(setError(null));
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/auth/register`,
+        {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(registrationData),
+        }
+      );
+      appDispatch(setIsLoading(false));
+      if (response.status >= 400 && response.status < 600) {
+        const responseMessage = (await response.json()).message;
+        appDispatch(setError(responseMessage));
+        throw new Error(responseMessage);
+      }
+      onLogin(registrationData);
+      setIsSnackbarOpened(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const onLogout = () => {
     authDispatch(setIsLoggedIn(false));
     authDispatch(setLoggedUser(null));
     clearTimeout(authTimer);
     localStorage.removeItem(LocalStorage.JWT);
-    console.log('logout');
   };
 
   const setAuthTimer = (expirationDate: Date) => {
     authTimer = setTimeout(() => {
       onLogout();
     }, expiresIn(expirationDate) * 1000);
+  };
+
+  const handleCloseSnackbar = (
+    event: SyntheticEvent | MouseEvent,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setIsSnackbarOpened(false);
   };
 
   useEffect(() => {
@@ -102,7 +152,6 @@ const AuthProvider: FC = ({ children }) => {
       authDispatch(setLoggedUser(null));
       localStorage.removeItem(LocalStorage.JWT);
     }
-    console.log('autoLogin');
   }, []);
 
   return (
@@ -112,9 +161,32 @@ const AuthProvider: FC = ({ children }) => {
         authDispatch,
         onLogin,
         onLogout,
+        onRegister,
       }}
     >
       {children}
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={isSnackbarOpened}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        message="Înregistrare reușită cu succes!"
+        action={
+          <>
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleCloseSnackbar}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </>
+        }
+      />
       <AuthDialog />
     </AuthContext.Provider>
   );

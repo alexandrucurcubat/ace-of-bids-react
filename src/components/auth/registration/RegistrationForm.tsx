@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Button from '@material-ui/core/Button';
@@ -13,6 +13,9 @@ import Person from '@material-ui/icons/Person';
 import Lock from '@material-ui/icons/Lock';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
+import { AuthContext } from '../../../context/AuthProvider';
+import { AppContext } from '../../../context/AppProvider';
+
 interface RegistrationFormProps {
   onLoginMode: () => void;
 }
@@ -26,14 +29,16 @@ interface RegistrationFormData {
 
 const RegistrationForm: FC<RegistrationFormProps> = ({ onLoginMode }) => {
   const { register, handleSubmit, errors, setError } = useForm();
+  const { onRegister } = useContext(AuthContext);
+  const { appState } = useContext(AppContext);
   const handleLoginMode = () => onLoginMode();
-  const onSubmit = (data: RegistrationFormData) => {
-    if (data.password !== data.confirmationPassword) {
+  const onSubmit = (registrationData: RegistrationFormData) => {
+    if (registrationData.password !== registrationData.confirmationPassword) {
       setError('confirmationPassword', {
         message: 'Parola nu coincide',
       });
     } else {
-      console.log(data);
+      onRegister(registrationData);
     }
   };
 
@@ -150,12 +155,14 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ onLoginMode }) => {
           }}
         />
       </DialogContent>
+      {appState.error && <span className="error">{appState.error}</span>}
       <DialogActions className="auth-dialog-actions">
         <Button
           type="submit"
           className="btn-submit"
           variant="contained"
           color="primary"
+          disabled={appState.isLoading}
         >
           Înregistrare
         </Button>
