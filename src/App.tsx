@@ -14,14 +14,17 @@ import Footer from './components/footer/Footer';
 import AuthRoute from './components/auth/AuthRoute';
 import Auctions from './components/auctions/Auctions';
 import Account from './components/account/Account';
+import { useAppInterceptor } from './hooks/app-interceptor';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
 function App() {
-  const { appState } = useContext(AppContext);
+  const { appState, appDispatch } = useContext(AppContext);
   const { themeState } = useContext(DarkThemeContext);
   const classes = useStyles();
   const queryParams = useQuery();
+
+  useAppInterceptor(appDispatch);
 
   return (
     <ThemeProvider theme={themeState.theme}>

@@ -27,7 +27,7 @@ import {
   isTokenExpired,
 } from '../utils/jwt-helper';
 import { AppContext } from './AppProvider';
-import { setError, setIsLoading } from './actions/app-actions';
+import { setError } from './actions/app-actions';
 import { authReducer, IAuthState } from './reducers/auth-reducer';
 import {
   closeAuthDialog,
@@ -59,7 +59,6 @@ const AuthProvider: FC = ({ children }) => {
 
   const onLogin = async (loginData: ILoginData) => {
     try {
-      appDispatch(setIsLoading(true));
       appDispatch(setError(null));
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/auth/login`,
@@ -69,7 +68,7 @@ const AuthProvider: FC = ({ children }) => {
           body: JSON.stringify(loginData),
         }
       );
-      appDispatch(setIsLoading(false));
+
       if (response.status >= 400 && response.status < 600) {
         const responseMessage = (await response.json()).message;
         appDispatch(setError(responseMessage));
@@ -91,7 +90,6 @@ const AuthProvider: FC = ({ children }) => {
 
   const onRegister = async (registrationData: IRegistrationData) => {
     try {
-      appDispatch(setIsLoading(true));
       appDispatch(setError(null));
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/auth/register`,
@@ -101,7 +99,7 @@ const AuthProvider: FC = ({ children }) => {
           body: JSON.stringify(registrationData),
         }
       );
-      appDispatch(setIsLoading(false));
+
       if (response.status >= 400 && response.status < 600) {
         const responseMessage = (await response.json()).message;
         appDispatch(setError(responseMessage));

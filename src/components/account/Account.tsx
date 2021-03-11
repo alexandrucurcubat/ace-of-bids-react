@@ -14,9 +14,17 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
 import './Account.css';
 import { AuthContext } from '../../context/AuthProvider';
+import {
+  IAccountData,
+  IPasswordData,
+  IUsernameData,
+} from '../../models/form-data-account.interface';
+import { AppContext } from '../../context/AppProvider';
+import { updatePassword, updateUsername } from './api/update-account';
 
 const Account: FC = () => {
-  const { authState } = useContext(AuthContext);
+  const { authState, authDispatch } = useContext(AuthContext);
+  const { appState, appDispatch } = useContext(AppContext);
   const { register, handleSubmit, errors, setError } = useForm({
     defaultValues: {
       username: authState.loggedUser?.username,
@@ -26,13 +34,28 @@ const Account: FC = () => {
     },
   });
 
-  const onSubmit = (data: any) => {
-    if (data.password !== data.passwordConfirmation) {
+  const onSubmit = async (accountData: IAccountData) => {
+    if (accountData.newPassword !== accountData.confirmationPassword) {
       setError('confirmationPassword', {
         message: 'Parola nu coincide',
       });
     } else {
-      console.log(data);
+      const id = authState.loggedUser?.id;
+      if (authState.loggedUser?.username !== accountData.username) {
+        const usernameData: IUsernameData = {
+          oldPassword: accountData.oldPassword,
+          username: accountData.username,
+        };
+        id && updateUsername(id, usernameData, appDispatch, authDispatch);
+      }
+
+      if (accountData.newPassword && accountData.newPassword.trim() !== '') {
+        const passwordData: IPasswordData = {
+          oldPassword: accountData.oldPassword,
+          newPassword: accountData.newPassword,
+        };
+        id && updatePassword(id, passwordData, appDispatch);
+      }
     }
   };
 
@@ -141,6 +164,7 @@ const Account: FC = () => {
             }}
           />
         </CardContent>
+        {appState.error && <span className="error">{appState.error}</span>}
         <CardActions>
           <div className="text-center w-100">
             <Button type="submit" className="btn-submit" color="primary">
