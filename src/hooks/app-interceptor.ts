@@ -4,9 +4,9 @@ import fetchIntercept from 'fetch-intercept';
 import { setIsLoading } from '../context/actions/app-actions';
 import { LocalStorage } from '../models/local-storage.enum';
 
-export const useAppInterceptor = (appDispatch: any) => {
-  let totalRequests = 0;
+let totalRequests = 0;
 
+export const useAppInterceptor = (appDispatch: any) => {
   const unregisterInterceptor = fetchIntercept.register({
     request: function (url, config) {
       totalRequests++;

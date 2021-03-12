@@ -31,8 +31,10 @@ export const updateUsername = async (
     const user = (await response.json()) as IUser;
     authDispatch(setLoggedUser(user));
     user.jwt && localStorage.setItem(LocalStorage.JWT, user.jwt);
+    return true;
   } catch (error) {
     console.log(error);
+    return false;
   }
 };
 
@@ -56,7 +58,9 @@ export const updatePassword = async (
       appDispatch(setError(responseMessage));
       throw new Error(responseMessage);
     }
+    return true;
   } catch (error) {
     console.log(error);
+    return false;
   }
 };

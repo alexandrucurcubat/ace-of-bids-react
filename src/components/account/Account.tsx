@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC, MouseEvent, SyntheticEvent, useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -11,6 +11,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Person from '@material-ui/icons/Person';
 import Lock from '@material-ui/icons/Lock';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 import './Account.css';
 import { AuthContext } from '../../context/AuthProvider';
@@ -23,9 +26,10 @@ import { AppContext } from '../../context/AppProvider';
 import { updatePassword, updateUsername } from './api/update-account';
 
 const Account: FC = () => {
+  const [isSnackbarOpened, setIsSnackbarOpened] = useState(false);
   const { authState, authDispatch } = useContext(AuthContext);
   const { appState, appDispatch } = useContext(AppContext);
-  const { register, handleSubmit, errors, setError } = useForm({
+  const { register, handleSubmit, errors, setError, setValue } = useForm({
     defaultValues: {
       username: authState.loggedUser?.username,
       oldPassword: '',
@@ -46,7 +50,13 @@ const Account: FC = () => {
           oldPassword: accountData.oldPassword,
           username: accountData.username,
         };
-        id && updateUsername(id, usernameData, appDispatch, authDispatch);
+        const success =
+          id &&
+          (await updateUsername(id, usernameData, appDispatch, authDispatch));
+        if (success) {
+          setValue('oldPassword', '');
+          setIsSnackbarOpened(true);
+        }
       }
 
       if (accountData.newPassword && accountData.newPassword.trim() !== '') {
@@ -54,9 +64,26 @@ const Account: FC = () => {
           oldPassword: accountData.oldPassword,
           newPassword: accountData.newPassword,
         };
-        id && updatePassword(id, passwordData, appDispatch);
+        const success =
+          id && (await updatePassword(id, passwordData, appDispatch));
+        if (success) {
+          setValue('oldPassword', '');
+          setValue('newPassword', '');
+          setValue('confirmationPassword', '');
+          setIsSnackbarOpened(true);
+        }
       }
     }
+  };
+
+  const handleCloseSnackbar = (
+    event: SyntheticEvent | MouseEvent,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setIsSnackbarOpened(false);
   };
 
   return (
@@ -173,6 +200,28 @@ const Account: FC = () => {
           </div>
         </CardActions>
       </Card>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        open={isSnackbarOpened}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        message="Date actualizate cu succes!"
+        action={
+          <>
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleCloseSnackbar}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </>
+        }
+      />
     </form>
   );
 };
