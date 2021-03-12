@@ -15,6 +15,7 @@ import AuthRoute from './components/auth/AuthRoute';
 import Auctions from './components/auctions/Auctions';
 import Account from './components/account/Account';
 import { useAppInterceptor } from './hooks/app-interceptor';
+import { AuctionStatus } from './models/auction.interface';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
 
@@ -35,7 +36,7 @@ function App() {
       <Container fixed className={classes.appContainer}>
         <Switch>
           <Route path="/auctions">
-            <Auctions status={queryParams.get('status')} />
+            <Auctions status={queryParams.get('status') as AuctionStatus} />
           </Route>
           <Route path="/about">Despre noi</Route>
           <AuthRoute path="/account">

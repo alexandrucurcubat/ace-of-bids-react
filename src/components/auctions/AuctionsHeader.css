@@ -1,0 +1,11 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.header-closed {
+  display: flex;
+  font-size: 150%;
+  padding-top: 18px;
+}
