@@ -1,33 +1,30 @@
 import { FC, useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
 
+import './AuctionsContainer.css';
 import {
   AuctionsFilterBy,
   AuctionStatus,
+  AuctionsView,
   IAuction,
 } from '../../models/auction.interface';
 import { getAuctions } from './api/auctions-api';
-import AuctionsClosed from './AuctionsClosed';
-import AuctionsLive from './AuctionsLive';
+import AuctionsGrid from './AuctionsGrid';
 import { useInterval } from '../../hooks/interval';
 import AuctionsHeader from './AuctionsHeader';
+import { LocalStorage } from '../../models/local-storage.enum';
 
-const renderAuctionsByStatus = (
-  status: AuctionStatus | null,
-  auctions: IAuction[]
-) => {
-  if (status === AuctionStatus.LIVE) {
-    return <AuctionsLive auctions={auctions} />;
-  } else if (status === AuctionStatus.CLOSED) {
-    return <AuctionsClosed auctions={auctions}  />;
-  } else {
-    <Redirect to="/auctions?status=live" />;
-  }
-};
+const localAuctionsView =
+  (localStorage.getItem(LocalStorage.AUCTION_VIEW) as AuctionsView) ||
+  AuctionsView.GRID;
 
-const Auctions: FC<{ status: AuctionStatus }> = ({ status }) => {
+const AuctionsContainer: FC<{ status: AuctionStatus }> = ({ status }) => {
   const [auctions, setAuctions] = useState<IAuction[]>([]);
   const [filterBy, setFilterBy] = useState(AuctionsFilterBy.ENDING_SOON);
+  const [auctionsView, setAuctionsView] = useState(localAuctionsView);
+
+  const onChangeAuctionView = (view: AuctionsView) => {
+    setAuctionsView(view);
+  };
 
   useInterval(() => {
     setAuctions(
@@ -52,10 +49,18 @@ const Auctions: FC<{ status: AuctionStatus }> = ({ status }) => {
         status={status}
         filterBy={filterBy}
         onFilterBy={handleFilterBy}
+        auctionsView={auctionsView}
+        onChangeAuctionView={onChangeAuctionView}
       />
-      <div>{renderAuctionsByStatus(status, auctions)}</div>
+      <div className="container">
+        {auctionsView === AuctionsView.GRID ? (
+          <AuctionsGrid auctions={auctions} />
+        ) : (
+          <>List</>
+        )}
+      </div>
     </>
   );
 };
 
-export default Auctions;
+export default AuctionsContainer;

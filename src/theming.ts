@@ -74,4 +74,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
     color: 'var(--success)',
     fontSize: '150%',
   },
+  cardMedia: {
+    height: '300px',
+  },
 }));

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, MouseEvent, useState } from 'react';
+import { ChangeEvent, FC, MouseEvent } from 'react';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -26,16 +26,13 @@ const filterByOptions = [
   { value: AuctionsFilterBy.NO_RESERVE, option: 'Fără rezervă' },
 ];
 
-const localAuctionsView =
-  (localStorage.getItem(LocalStorage.AUCTION_VIEW) as AuctionsView) ||
-  AuctionsView.GRID;
-
 const AuctionsHeader: FC<{
   status: AuctionStatus;
   filterBy: AuctionsFilterBy;
   onFilterBy: any;
-}> = ({ status, filterBy, onFilterBy }) => {
-  const [auctionsView, setAuctionsView] = useState(localAuctionsView);
+  auctionsView: AuctionsView;
+  onChangeAuctionView: any;
+}> = ({ status, filterBy, onFilterBy, auctionsView, onChangeAuctionView }) => {
   const classes = useStyles();
 
   const handleFilterBy = (event: ChangeEvent<{ value: unknown }>) => {
@@ -46,8 +43,10 @@ const AuctionsHeader: FC<{
     event: MouseEvent<HTMLElement>,
     auctionsView: AuctionsView
   ) => {
-    setAuctionsView(auctionsView);
-    localStorage.setItem(LocalStorage.AUCTION_VIEW, auctionsView);
+    if (auctionsView) {
+        onChangeAuctionView(auctionsView);
+        localStorage.setItem(LocalStorage.AUCTION_VIEW, auctionsView);
+    }
   };
 
   return (
@@ -81,10 +80,10 @@ const AuctionsHeader: FC<{
           exclusive
           onChange={handleAuctionsView}
         >
-          <ToggleButton value={AuctionsView.GRID} aria-label="grid">
+          <ToggleButton value={AuctionsView.GRID}>
             <Apps />
           </ToggleButton>
-          <ToggleButton value={AuctionsView.LIST} aria-label="list">
+          <ToggleButton value={AuctionsView.LIST}>
             <ViewListIcon />
           </ToggleButton>
         </ToggleButtonGroup>

@@ -12,7 +12,7 @@ import Drawer from './components/drawer/Drawer';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import AuthRoute from './components/auth/AuthRoute';
-import Auctions from './components/auctions/Auctions';
+import AuctionsContainer from './components/auctions/AuctionsContainer';
 import Account from './components/account/Account';
 import { useAppInterceptor } from './hooks/app-interceptor';
 import { AuctionStatus } from './models/auction.interface';
@@ -36,14 +36,16 @@ function App() {
       <Container fixed className={classes.appContainer}>
         <Switch>
           <Route path="/auctions">
-            <Auctions status={queryParams.get('status') as AuctionStatus} />
+            <AuctionsContainer
+              status={queryParams.get('status') as AuctionStatus}
+            />
           </Route>
           <Route path="/about">Despre noi</Route>
           <AuthRoute path="/account">
             <Account />
           </AuthRoute>
           <Route path="/">
-            <Redirect to="/auctions" />
+            <Redirect to="/auctions?status=live" />
           </Route>
         </Switch>
       </Container>
