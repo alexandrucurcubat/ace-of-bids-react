@@ -103,3 +103,7 @@ a {
 .text-end {
   text-align: end;
 }
+
+.pt-16 {
+  padding-top: 16px;
+}

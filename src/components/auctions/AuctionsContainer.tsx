@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from 'react';
 
-import './AuctionsContainer.css';
 import {
   AuctionsFilterBy,
   AuctionStatus,
@@ -12,6 +11,7 @@ import AuctionsGrid from './AuctionsGrid';
 import { useInterval } from '../../hooks/interval';
 import AuctionsHeader from './AuctionsHeader';
 import { LocalStorage } from '../../models/local-storage.enum';
+import AuctionsList from './AuctionsList';
 
 const localAuctionsView =
   (localStorage.getItem(LocalStorage.AUCTION_VIEW) as AuctionsView) ||
@@ -52,11 +52,11 @@ const AuctionsContainer: FC<{ status: AuctionStatus }> = ({ status }) => {
         auctionsView={auctionsView}
         onChangeAuctionView={onChangeAuctionView}
       />
-      <div className="container">
+      <div className={auctionsView === AuctionsView.GRID ? 'pt-16' : ''}>
         {auctionsView === AuctionsView.GRID ? (
           <AuctionsGrid auctions={auctions} />
         ) : (
-          <>List</>
+          <AuctionsList auctions={auctions} />
         )}
       </div>
     </>

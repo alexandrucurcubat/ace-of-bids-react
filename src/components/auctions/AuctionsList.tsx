@@ -1,40 +1,44 @@
 import { FC } from 'react';
-import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import Avatar from '@material-ui/core/Avatar';
+import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 
 import { AuctionStatus, IAuction } from '../../models/auction.interface';
 import { secondsToDhms } from '../../utils/secods-to-dhms';
-import { useStyles } from '../../theming';
 
-const AuctionsGrid: FC<{ auctions: IAuction[] }> = ({ auctions }) => {
-  const classes = useStyles();
-
+const AuctionsList: FC<{ auctions: IAuction[] }> = ({ auctions }) => {
   return (
-    <Grid container spacing={2}>
+    <List component="nav" aria-label="main mailbox folders">
       {auctions.map((auction) => (
-        <Grid key={auction.id} item xs={12} sm={6} md={4}>
-          <Card>
-            <div style={{ padding: '16px' }}>
-              <Typography variant="h6">{auction.title}</Typography>
+        <div key={auction.id}>
+          <ListItem button>
+            <ListItemAvatar>
+              <Avatar
+                alt="auction image"
+                src={process.env.PUBLIC_URL + '/logo192.png'}
+              />
+            </ListItemAvatar>
+            <div>
+              <Typography variant="body2">{auction.title}</Typography>
               <Typography
-                variant="subtitle1"
+                variant="body2"
                 color={auction.reserve ? 'textSecondary' : 'primary'}
               >
                 {auction.reserve ? 'Cu rezervă' : 'Fără rezervă'}
               </Typography>
             </div>
-            <CardMedia
-              className={classes.cardMedia}
-              image={process.env.PUBLIC_URL + '/logo512.png'}
-              title="Auction image"
-            />
-            <CardContent>
-              <Typography variant="body2" color="textPrimary" component="p">
-                {auction.description}
-              </Typography>
+            <ListItemSecondaryAction
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+              }}
+            >
               {auction.status === AuctionStatus.LIVE ? (
                 <>
                   {auction.lastBid !== 0 ? (
@@ -57,7 +61,11 @@ const AuctionsGrid: FC<{ auctions: IAuction[] }> = ({ auctions }) => {
                       Nu sunt oferte
                     </Typography>
                   )}
-                  <Typography variant="body2" color="textSecondary" component="p">
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
                     Închide în:
                     <span
                       className={
@@ -90,12 +98,13 @@ const AuctionsGrid: FC<{ auctions: IAuction[] }> = ({ auctions }) => {
                   )}
                 </>
               )}
-            </CardContent>
-          </Card>
-        </Grid>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+        </div>
       ))}
-    </Grid>
+    </List>
   );
 };
 
-export default AuctionsGrid;
+export default AuctionsList;
