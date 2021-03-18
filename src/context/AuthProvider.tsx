@@ -15,7 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
 import AuthDialog from '../components/auth/AuthDialog';
-import { login, register } from '../components/auth/api/auth-api';
+import * as authApi from '../components/auth/api/auth-api';
 import { LocalStorage } from '../models/local-storage.enum';
 import { IJwtPayload } from '../models/jwt-payload.interface';
 import { ILoginData } from '../models/form-data-login.interface';
@@ -60,7 +60,7 @@ const AuthProvider: FC = ({ children }) => {
   const onLogin = async (loginData: ILoginData) => {
     try {
       appDispatch(setError(null));
-      const jwt = await login(loginData);
+      const jwt = await authApi.login(loginData);
       const decodedToken = jwtDecode<IJwtPayload>(jwt);
       const expirationDate = getTokenExpirationDate(jwt);
       setAuthTimer(expirationDate);
@@ -77,7 +77,7 @@ const AuthProvider: FC = ({ children }) => {
   const onRegister = async (registrationData: IRegistrationData) => {
     try {
       appDispatch(setError(null));
-      register(registrationData);
+      authApi.register(registrationData);
       onLogin(registrationData);
       setIsSnackbarOpened(true);
     } catch (error) {

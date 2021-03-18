@@ -16,10 +16,10 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
 import './Account.css';
+import * as accountApi from './api/account-api';
 import { AuthContext } from '../../context/AuthProvider';
 import { IAccountData } from '../../models/form-data-account.interface';
 import { AppContext } from '../../context/AppProvider';
-import { updatePassword, updateUsername } from './api/account-api';
 import { setError as setAppError } from '../../context/actions/app-actions';
 import { setLoggedUser } from '../../context/actions/auth-actions';
 import { LocalStorage } from '../../models/local-storage.enum';
@@ -49,20 +49,21 @@ const Account: FC = () => {
       if (loggedUser) {
         const id = loggedUser.id;
         appDispatch(setAppError(null));
-        if (loggedUser.username !== username) {
-          try {
-            const user = await updateUsername(id, { oldPassword, username });
-            authDispatch(setLoggedUser(user));
-            setIsSnackbarOpened(true);
-            setValue('oldPassword', '');
-            user.jwt && localStorage.setItem(LocalStorage.JWT, user.jwt);
-          } catch (error) {
-            appDispatch(setAppError(error));
-          }
+        try {
+          const user = await accountApi.updateUsername(id, {
+            oldPassword,
+            username,
+          });
+          user.jwt && localStorage.setItem(LocalStorage.JWT, user.jwt);
+          authDispatch(setLoggedUser(user));
+          setIsSnackbarOpened(true);
+          setValue('oldPassword', '');
+        } catch (error) {
+          appDispatch(setAppError(error));
         }
         if (newPassword && newPassword.trim() !== '') {
           try {
-            await updatePassword(id, { oldPassword, newPassword });
+            await accountApi.updatePassword(id, { oldPassword, newPassword });
             setValue('oldPassword', '');
             setValue('newPassword', '');
             setValue('confirmationPassword', '');
