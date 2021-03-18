@@ -1,8 +1,7 @@
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
@@ -15,7 +14,7 @@ const AuctionsList: FC<{ auctions: IAuction[] }> = ({ auctions }) => {
   return (
     <List component="nav" aria-label="main mailbox folders">
       {auctions.map((auction) => (
-        <div key={auction.id}>
+        <Fragment key={auction.id}>
           <ListItem button>
             <ListItemAvatar>
               <Avatar
@@ -101,7 +100,7 @@ const AuctionsList: FC<{ auctions: IAuction[] }> = ({ auctions }) => {
             </ListItemSecondaryAction>
           </ListItem>
           <Divider />
-        </div>
+        </Fragment>
       ))}
     </List>
   );

@@ -17,21 +17,21 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import './Account.css';
 import { AuthContext } from '../../context/AuthProvider';
-import {
-  IAccountData,
-  IPasswordData,
-  IUsernameData,
-} from '../../models/form-data-account.interface';
+import { IAccountData } from '../../models/form-data-account.interface';
 import { AppContext } from '../../context/AppProvider';
-import { updatePassword, updateUsername } from './api/update-account';
+import { updatePassword, updateUsername } from './api/account-api';
+import { setError as setAppError } from '../../context/actions/app-actions';
+import { setLoggedUser } from '../../context/actions/auth-actions';
+import { LocalStorage } from '../../models/local-storage.enum';
 
 const Account: FC = () => {
   const [isSnackbarOpened, setIsSnackbarOpened] = useState(false);
-  const { authState, authDispatch } = useContext(AuthContext);
   const { appState, appDispatch } = useContext(AppContext);
-  const { register, handleSubmit, errors, setError, setValue } = useForm({
+  const { authState, authDispatch } = useContext(AuthContext);
+  const loggedUser = authState.loggedUser;
+  const { handleSubmit, register, errors, setError, setValue } = useForm({
     defaultValues: {
-      username: authState.loggedUser?.username,
+      username: loggedUser?.username,
       oldPassword: '',
       newPassword: '',
       confirmationPassword: '',
@@ -39,38 +39,37 @@ const Account: FC = () => {
   });
 
   const onSubmit = async (accountData: IAccountData) => {
-    if (accountData.newPassword !== accountData.confirmationPassword) {
-      setError('confirmationPassword', {
-        message: 'Parola nu coincide',
-      });
+    const username = accountData.username;
+    const oldPassword = accountData.oldPassword;
+    const newPassword = accountData.newPassword;
+    const confirmationPassword = accountData.confirmationPassword;
+    if (newPassword !== confirmationPassword) {
+      setError('confirmationPassword', { message: 'Parola nu coincide' });
     } else {
-      const id = authState.loggedUser?.id;
-      if (authState.loggedUser?.username !== accountData.username) {
-        const usernameData: IUsernameData = {
-          oldPassword: accountData.oldPassword,
-          username: accountData.username,
-        };
-        const success =
-          id &&
-          (await updateUsername(id, usernameData, appDispatch, authDispatch));
-        if (success) {
-          setValue('oldPassword', '');
-          setIsSnackbarOpened(true);
+      if (loggedUser) {
+        const id = loggedUser.id;
+        appDispatch(setAppError(null));
+        if (loggedUser.username !== username) {
+          try {
+            const user = await updateUsername(id, { oldPassword, username });
+            authDispatch(setLoggedUser(user));
+            setIsSnackbarOpened(true);
+            setValue('oldPassword', '');
+            user.jwt && localStorage.setItem(LocalStorage.JWT, user.jwt);
+          } catch (error) {
+            appDispatch(setAppError(error));
+          }
         }
-      }
-
-      if (accountData.newPassword && accountData.newPassword.trim() !== '') {
-        const passwordData: IPasswordData = {
-          oldPassword: accountData.oldPassword,
-          newPassword: accountData.newPassword,
-        };
-        const success =
-          id && (await updatePassword(id, passwordData, appDispatch));
-        if (success) {
-          setValue('oldPassword', '');
-          setValue('newPassword', '');
-          setValue('confirmationPassword', '');
-          setIsSnackbarOpened(true);
+        if (newPassword && newPassword.trim() !== '') {
+          try {
+            await updatePassword(id, { oldPassword, newPassword });
+            setValue('oldPassword', '');
+            setValue('newPassword', '');
+            setValue('confirmationPassword', '');
+            setIsSnackbarOpened(true);
+          } catch (error) {
+            appDispatch(setAppError(error));
+          }
         }
       }
     }
@@ -96,8 +95,8 @@ const Account: FC = () => {
               src={process.env.PUBLIC_URL + '/logo192.png'}
             ></Avatar>
           }
-          title={authState.loggedUser?.username}
-          subheader={authState.loggedUser?.email}
+          title={loggedUser?.username}
+          subheader={loggedUser?.email}
         />
         <CardContent>
           <TextField

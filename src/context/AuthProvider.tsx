@@ -15,8 +15,8 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
 import AuthDialog from '../components/auth/AuthDialog';
+import { login, register } from '../components/auth/api/auth-api';
 import { LocalStorage } from '../models/local-storage.enum';
-import { IJwtResponse } from '../models/jwt-response.interface';
 import { IJwtPayload } from '../models/jwt-payload.interface';
 import { ILoginData } from '../models/form-data-login.interface';
 import { IAuthContext } from '../models/context-auth.interface';
@@ -60,21 +60,7 @@ const AuthProvider: FC = ({ children }) => {
   const onLogin = async (loginData: ILoginData) => {
     try {
       appDispatch(setError(null));
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/auth/login`,
-        {
-          method: 'post',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(loginData),
-        }
-      );
-
-      if (response.status >= 400 && response.status < 600) {
-        const responseMessage = (await response.json()).message;
-        appDispatch(setError(responseMessage));
-        throw new Error(responseMessage);
-      }
-      const jwt = ((await response.json()) as IJwtResponse).jwt;
+      const jwt = await login(loginData);
       const decodedToken = jwtDecode<IJwtPayload>(jwt);
       const expirationDate = getTokenExpirationDate(jwt);
       setAuthTimer(expirationDate);
@@ -84,31 +70,18 @@ const AuthProvider: FC = ({ children }) => {
       localStorage.setItem(LocalStorage.JWT, jwt);
       history.push('/account');
     } catch (error) {
-      console.log(error);
+      appDispatch(setError(error));
     }
   };
 
   const onRegister = async (registrationData: IRegistrationData) => {
     try {
       appDispatch(setError(null));
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/auth/register`,
-        {
-          method: 'post',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(registrationData),
-        }
-      );
-
-      if (response.status >= 400 && response.status < 600) {
-        const responseMessage = (await response.json()).message;
-        appDispatch(setError(responseMessage));
-        throw new Error(responseMessage);
-      }
+      register(registrationData);
       onLogin(registrationData);
       setIsSnackbarOpened(true);
     } catch (error) {
-      console.log(error);
+      appDispatch(setError(error));
     }
   };
 
