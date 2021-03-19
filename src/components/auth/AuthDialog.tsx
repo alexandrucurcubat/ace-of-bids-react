@@ -8,6 +8,8 @@ import PasswordResetForm from './password-reset/PasswordResetForm';
 import { FormType } from '../../models/form-type.enum';
 import { AuthContext } from '../../context/AuthProvider';
 import { closeAuthDialog } from '../../context/actions/auth-actions';
+import { AppContext } from '../../context/AppProvider';
+import { setError } from '../../context/actions/app-actions';
 
 const renderFormByType = ({
   handleRegistrationMode,
@@ -29,11 +31,25 @@ const renderFormByType = ({
 const AuthDialog: FC = () => {
   const [formType, setFormType] = useState(FormType.LOGIN);
   const { authState, authDispatch } = useContext(AuthContext);
+  const { appDispatch } = useContext(AppContext);
 
-  const handleCloseAuthDialog = () => authDispatch(closeAuthDialog());
-  const handleLoginMode = () => setFormType(FormType.LOGIN);
-  const handleRegistrationMode = () => setFormType(FormType.REGISTRATION);
-  const handlePasswordResetMode = () => setFormType(FormType.PASSWORD_RESET);
+  const handleCloseAuthDialog = () => {
+    authDispatch(closeAuthDialog());
+    appDispatch(setError(null));
+    setFormType(FormType.LOGIN);
+  };
+  const handleLoginMode = () => {
+    appDispatch(setError(null));
+    setFormType(FormType.LOGIN);
+  };
+  const handleRegistrationMode = () => {
+    appDispatch(setError(null));
+    setFormType(FormType.REGISTRATION);
+  };
+  const handlePasswordResetMode = () => {
+    appDispatch(setError(null));
+    setFormType(FormType.PASSWORD_RESET);
+  };
 
   return (
     <Dialog open={authState.isAuthDialogOpened} onClose={handleCloseAuthDialog}>

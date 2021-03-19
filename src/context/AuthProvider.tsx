@@ -21,6 +21,7 @@ import {
   setIsLoggedIn,
   setLoggedUser,
 } from './actions/auth-actions';
+import { handleError } from '../utils/error-handler';
 
 let authTimer: NodeJS.Timer;
 
@@ -54,7 +55,7 @@ const AuthProvider: FC = ({ children }) => {
       authDispatch(closeAuthDialog());
       localStorage.setItem(LocalStorage.JWT, jwt);
     } catch (error) {
-      appDispatch(setError(error));
+      handleError(error, appDispatch);
     }
   };
 
@@ -64,7 +65,7 @@ const AuthProvider: FC = ({ children }) => {
       await authApi.register(registrationData);
       onLogin(registrationData);
     } catch (error) {
-      appDispatch(setError(error));
+      handleError(error, appDispatch);
     }
   };
 

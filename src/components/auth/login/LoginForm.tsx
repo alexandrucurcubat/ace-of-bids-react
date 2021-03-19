@@ -15,12 +15,12 @@ import { AuthContext } from '../../../context/AuthProvider';
 import { AppContext } from '../../../context/AppProvider';
 import { ILoginData } from '../../../models/form-data-login.interface';
 
-interface LoginFromProps {
+interface LoginFormProps {
   onRegistrationMode: () => void;
   onPasswordResetMode: () => void;
 }
 
-const LoginForm: FC<LoginFromProps> = ({
+const LoginForm: FC<LoginFormProps> = ({
   onRegistrationMode,
   onPasswordResetMode,
 }) => {

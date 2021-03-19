@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
@@ -14,7 +14,7 @@ import Footer from './components/footer/Footer';
 import AuthRoute from './components/auth/AuthRoute';
 import AuctionsContainer from './components/auctions/AuctionsContainer';
 import Account from './components/account/Account';
-import { useAppInterceptor } from './hooks/app-interceptor';
+import { initInterceptor } from './core/app-interceptor';
 import { AuctionStatus } from './models/auction.interface';
 
 const useQuery = () => new URLSearchParams(useLocation().search);
@@ -25,7 +25,10 @@ function App() {
   const classes = useStyles();
   const queryParams = useQuery();
 
-  useAppInterceptor(appDispatch);
+  useEffect(() => {
+    const unregister = initInterceptor(appDispatch);
+    return () => unregister();
+  }, [appDispatch]);
 
   return (
     <ThemeProvider theme={themeState.theme}>

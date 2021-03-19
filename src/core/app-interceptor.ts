@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import fetchIntercept from 'fetch-intercept';
 
 import { setIsLoading } from '../context/actions/app-actions';
@@ -6,8 +5,8 @@ import { LocalStorage } from '../models/local-storage.enum';
 
 let totalRequests = 0;
 
-export const useAppInterceptor = (appDispatch: any) => {
-  const unregisterInterceptor = fetchIntercept.register({
+export const initInterceptor = (appDispatch: any) => {
+  const unregister = fetchIntercept.register({
     request: function (url, config) {
       totalRequests++;
       appDispatch(setIsLoading(true));
@@ -26,6 +25,10 @@ export const useAppInterceptor = (appDispatch: any) => {
     },
 
     requestError: function (error) {
+      totalRequests--;
+      if (totalRequests === 0) {
+        appDispatch(setIsLoading(false));
+      }
       return Promise.reject(error);
     },
 
@@ -38,11 +41,13 @@ export const useAppInterceptor = (appDispatch: any) => {
     },
 
     responseError: function (error) {
+      totalRequests--;
+      if (totalRequests === 0) {
+        appDispatch(setIsLoading(false));
+      }
       return Promise.reject(error);
     },
   });
 
-  useEffect(() => {
-    return unregisterInterceptor();
-  }, [unregisterInterceptor]);
+  return unregister;
 };

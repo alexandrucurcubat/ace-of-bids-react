@@ -23,6 +23,7 @@ import { AppContext } from '../../context/AppProvider';
 import { setError as setAppError } from '../../context/actions/app-actions';
 import { setLoggedUser } from '../../context/actions/auth-actions';
 import { LocalStorage } from '../../models/local-storage.enum';
+import { handleError } from '../../utils/error-handler';
 
 const Account: FC = () => {
   const [isSnackbarOpened, setIsSnackbarOpened] = useState(false);
@@ -59,7 +60,7 @@ const Account: FC = () => {
           setIsSnackbarOpened(true);
           setValue('oldPassword', '');
         } catch (error) {
-          appDispatch(setAppError(error));
+          handleError(error, appDispatch);
         }
         if (newPassword && newPassword.trim() !== '') {
           try {
@@ -69,7 +70,7 @@ const Account: FC = () => {
             setValue('confirmationPassword', '');
             setIsSnackbarOpened(true);
           } catch (error) {
-            appDispatch(setAppError(error));
+            handleError(error, appDispatch);
           }
         }
       }
@@ -191,7 +192,9 @@ const Account: FC = () => {
             }}
           />
         </CardContent>
-        {appState.error && <span className="error">{appState.error}</span>}
+        <div className="text-center">
+          {appState.error && <span className="error">{appState.error}</span>}
+        </div>
         <CardActions>
           <div className="text-center w-100">
             <Button type="submit" color="primary">
