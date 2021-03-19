@@ -6,7 +6,7 @@ export interface IAccountData {
 }
 
 export interface IUsernameData {
-  oldPassword: string;
+  password: string;
   username: string;
 }
 

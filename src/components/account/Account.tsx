@@ -51,7 +51,7 @@ const Account: FC = () => {
         appDispatch(setAppError(null));
         try {
           const user = await accountApi.updateUsername(id, {
-            oldPassword,
+            password: oldPassword,
             username,
           });
           user.jwt && localStorage.setItem(LocalStorage.JWT, user.jwt);
