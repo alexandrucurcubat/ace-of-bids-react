@@ -36,11 +36,7 @@ const AuthDialog: FC = () => {
   const handlePasswordResetMode = () => setFormType(FormType.PASSWORD_RESET);
 
   return (
-    <Dialog
-      className={'auth-dialog'}
-      open={authState.isAuthDialogOpened}
-      onClose={handleCloseAuthDialog}
-    >
+    <Dialog open={authState.isAuthDialogOpened} onClose={handleCloseAuthDialog}>
       {
         renderFormByType({
           handleRegistrationMode,

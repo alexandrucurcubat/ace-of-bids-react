@@ -20,7 +20,7 @@ const PasswordResetForm: FC<PasswordResetFormProps> = ({ onLoginMode }) => {
   const onSubmit = (data: any) => console.log(data);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>Resetare parolă</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -56,13 +56,8 @@ const PasswordResetForm: FC<PasswordResetFormProps> = ({ onLoginMode }) => {
           }}
         />
       </DialogContent>
-      <DialogActions className="auth-dialog-actions">
-        <Button
-          type="submit"
-          className="btn-submit"
-          variant="contained"
-          color="primary"
-        >
+      <DialogActions className="flex-column">
+        <Button type="submit" variant="contained" color="primary">
           Resetare parolă
         </Button>
       </DialogActions>

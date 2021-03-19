@@ -43,7 +43,7 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ onLoginMode }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>Înregistrare cont</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -156,10 +156,9 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ onLoginMode }) => {
         />
       </DialogContent>
       {appState.error && <span className="error">{appState.error}</span>}
-      <DialogActions className="auth-dialog-actions">
+      <DialogActions className="flex-column">
         <Button
           type="submit"
-          className="btn-submit"
           variant="contained"
           color="primary"
           disabled={appState.isLoading}

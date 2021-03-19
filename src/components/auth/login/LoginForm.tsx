@@ -33,7 +33,7 @@ const LoginForm: FC<LoginFromProps> = ({
   const onSubmit = (loginData: ILoginData) => onLogin(loginData);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className="auth-form" onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>Conectare</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -92,19 +92,20 @@ const LoginForm: FC<LoginFromProps> = ({
         />
       </DialogContent>
       {appState.error && <span className="error">{appState.error}</span>}
-      <DialogActions className="auth-dialog-actions">
-        <Button
-          type="submit"
-          className="btn-submit"
-          variant="contained"
-          color="primary"
-          disabled={appState.isLoading}
-        >
-          Conectare
-        </Button>
-        <Link to="#" className="pb-16" onClick={handlePasswordResetMode}>
+      <DialogActions className="flex-column">
+        <div className="mb-16">
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={appState.isLoading}
+          >
+            Conectare
+          </Button>
+        </div>
+        {/* <Link to="#" className="pb-16" onClick={handlePasswordResetMode}>
           Ai uitat parola?
-        </Link>
+        </Link> */}
       </DialogActions>
     </form>
   );

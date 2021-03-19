@@ -79,6 +79,9 @@ export const useStyles = makeStyles(
       color: 'var(--success)',
       fontSize: '150%',
     },
+    labelIcon: {
+      marginBottom: '-4px',
+    },
     cardMedia: {
       height: '300px',
     },

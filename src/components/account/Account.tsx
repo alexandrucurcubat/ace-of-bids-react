@@ -87,7 +87,7 @@ const Account: FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className="account-form" onSubmit={handleSubmit(onSubmit)}>
       <Card>
         <CardHeader
           avatar={
@@ -194,7 +194,7 @@ const Account: FC = () => {
         {appState.error && <span className="error">{appState.error}</span>}
         <CardActions>
           <div className="text-center w-100">
-            <Button type="submit" className="btn-submit" color="primary">
+            <Button type="submit" color="primary">
               Salvează modificările
             </Button>
           </div>

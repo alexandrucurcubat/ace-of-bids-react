@@ -44,18 +44,18 @@ const AuctionsHeader: FC<{
     auctionsView: AuctionsView
   ) => {
     if (auctionsView) {
-        onChangeAuctionView(auctionsView);
-        localStorage.setItem(LocalStorage.AUCTION_VIEW, auctionsView);
+      onChangeAuctionView(auctionsView);
+      localStorage.setItem(LocalStorage.AUCTION_VIEW, auctionsView);
     }
   };
 
   return (
     <>
-      <div className="header">
+      <header className="flex space-between pb-16">
         {status === AuctionStatus.LIVE ? (
           <FormControl>
-            <InputLabel className={classes.labelSuccess} id="filter-by">
-              <RssFeed /> Live
+            <InputLabel id="filter-by">
+              <RssFeed className={classes.labelIcon} /> <span>Live</span>
             </InputLabel>
             <Select
               labelId="filter-by"
@@ -70,9 +70,9 @@ const AuctionsHeader: FC<{
             </Select>
           </FormControl>
         ) : (
-          <div className="header-closed">
+          <div className="flex pt-16">
             <Gavel />
-            Închise
+            <span className="closed px-5">Închise</span>
           </div>
         )}
         <ToggleButtonGroup
@@ -87,7 +87,7 @@ const AuctionsHeader: FC<{
             <ViewListIcon />
           </ToggleButton>
         </ToggleButtonGroup>
-      </div>
+      </header>
       <Divider />
     </>
   );
