@@ -95,43 +95,33 @@ const Drawer: FC = () => {
             <List component="div" disablePadding>
               <Link
                 to="/auctions?status=live"
-                style={{ textDecoration: 'none', display: 'block' }}
+                className={classes.link}
                 onClick={handleToggleDrawer(false)}
               >
-                <ListItem
-                  button
-                  className={`${classes.listNested} ${classes.success}`}
-                >
+                <ListItem button className={`${classes.listNested}`}>
                   <ListItemIcon>
                     <RssFeed />
                   </ListItemIcon>
-                  <ListItemText primary="Live" color="primary" />
+                  <ListItemText primary="Live" className="success" />
                 </ListItem>
               </Link>
               <Link
                 to="/auctions?status=closed"
-                style={{ textDecoration: 'none', display: 'block' }}
+                className={classes.link}
                 onClick={handleToggleDrawer(false)}
               >
                 <ListItem button className={classes.listNested}>
                   <ListItemIcon>
                     <Gavel />
                   </ListItemIcon>
-                  <ListItemText
-                    style={{ color: themeState.isDarkMode ? 'white' : 'black' }}
-                    primary="Închise"
-                  />
+                  <ListItemText primary="Închise" />
                 </ListItem>
               </Link>
             </List>
           </Collapse>
           <Link
             to="/about"
-            style={{
-              textDecoration: 'none',
-              display: 'block',
-              color: themeState.isDarkMode ? 'white' : 'black',
-            }}
+            className={classes.link}
             onClick={handleToggleDrawer(false)}
           >
             <ListItem button>
@@ -154,19 +144,14 @@ const Drawer: FC = () => {
                 <List component="div" disablePadding>
                   <Link
                     to="/account"
-                    style={{ textDecoration: 'none', display: 'block' }}
+                    className={classes.link}
                     onClick={handleToggleDrawer(false)}
                   >
                     <ListItem button className={classes.listNested}>
                       <ListItemIcon>
                         <Person />
                       </ListItemIcon>
-                      <ListItemText
-                        primary="Vezi contul"
-                        style={{
-                          color: themeState.isDarkMode ? 'white' : 'black',
-                        }}
-                      />
+                      <ListItemText primary="Vezi contul" />
                     </ListItem>
                   </Link>
                   <div onClick={handleLogout}>
@@ -214,7 +199,6 @@ const Drawer: FC = () => {
         <Fab
           className={classes.drawerFAB}
           color="primary"
-          aria-label="drawer"
           onClick={handleToggleDrawer(true)}
         >
           <Menu />

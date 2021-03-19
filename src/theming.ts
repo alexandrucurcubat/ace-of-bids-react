@@ -65,6 +65,10 @@ export const useStyles = makeStyles(
     error: {
       color: 'var(--error)',
     },
+    link: {
+      color: 'inherit',
+      textDecoration: 'none',
+    },
     listNested: {
       paddingLeft: theme.spacing(4),
     },
@@ -77,6 +81,9 @@ export const useStyles = makeStyles(
     },
     cardMedia: {
       height: '300px',
+    },
+    noTextTransform: {
+      textTransform: 'none',
     },
   }),
   { index: 1 }

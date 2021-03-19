@@ -8,16 +8,6 @@ form {
   flex-direction: column;
 }
 
-.link-register {
-  text-decoration: none;
-  margin: 0 3px;
-}
-
-.link-reset-password {
-  text-decoration: none;
-  margin: 0 0 16px !important;
-}
-
 .btn-submit {
   margin: 16px 0 !important;
 }

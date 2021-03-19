@@ -27,6 +27,7 @@ const LoginForm: FC<LoginFromProps> = ({
   const { register, handleSubmit, errors } = useForm();
   const { onLogin } = useContext(AuthContext);
   const { appState } = useContext(AppContext);
+
   const handleRegistrationMode = () => onRegistrationMode();
   const handlePasswordResetMode = () => onPasswordResetMode();
   const onSubmit = (loginData: ILoginData) => onLogin(loginData);
@@ -37,11 +38,7 @@ const LoginForm: FC<LoginFromProps> = ({
       <DialogContent>
         <DialogContentText>
           Încă nu ai un cont?
-          <Link
-            className="link-register"
-            to="#"
-            onClick={handleRegistrationMode}
-          >
+          <Link className="px-5" to="#" onClick={handleRegistrationMode}>
             Înregistrează-te aici
           </Link>
         </DialogContentText>
@@ -105,11 +102,7 @@ const LoginForm: FC<LoginFromProps> = ({
         >
           Conectare
         </Button>
-        <Link
-          className="link-reset-password"
-          to="#"
-          onClick={handlePasswordResetMode}
-        >
+        <Link to="#" className="pb-16" onClick={handlePasswordResetMode}>
           Ai uitat parola?
         </Link>
       </DialogActions>

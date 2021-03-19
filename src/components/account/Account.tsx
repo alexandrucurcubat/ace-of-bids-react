@@ -210,16 +210,13 @@ const Account: FC = () => {
         onClose={handleCloseSnackbar}
         message="Date actualizate cu succes!"
         action={
-          <>
-            <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
-              onClick={handleCloseSnackbar}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </>
+          <IconButton
+            size="small"
+            color="inherit"
+            onClick={handleCloseSnackbar}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
         }
       />
     </form>

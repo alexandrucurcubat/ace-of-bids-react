@@ -48,7 +48,7 @@ const RegistrationForm: FC<RegistrationFormProps> = ({ onLoginMode }) => {
       <DialogContent>
         <DialogContentText>
           Deja ai un cont?
-          <Link className="link-register" to="#" onClick={handleLoginMode}>
+          <Link className="px-5" to="#" onClick={handleLoginMode}>
             Conectează-te
           </Link>
         </DialogContentText>

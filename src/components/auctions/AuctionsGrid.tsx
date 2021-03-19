@@ -17,7 +17,7 @@ const AuctionsGrid: FC<{ auctions: IAuction[] }> = ({ auctions }) => {
       {auctions.map((auction) => (
         <Grid key={auction.id} item xs={12} sm={6} md={4}>
           <Card>
-            <div style={{ padding: '16px' }}>
+            <div className="p-16">
               <Typography variant="h6">{auction.title}</Typography>
               <Typography
                 variant="subtitle1"
@@ -57,7 +57,11 @@ const AuctionsGrid: FC<{ auctions: IAuction[] }> = ({ auctions }) => {
                       Nu sunt oferte
                     </Typography>
                   )}
-                  <Typography variant="body2" color="textSecondary" component="p">
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
                     Închide în:
                     <span
                       className={

@@ -12,7 +12,7 @@ import { secondsToDhms } from '../../utils/secods-to-dhms';
 
 const AuctionsList: FC<{ auctions: IAuction[] }> = ({ auctions }) => {
   return (
-    <List component="nav" aria-label="main mailbox folders">
+    <List component="nav">
       {auctions.map((auction) => (
         <Fragment key={auction.id}>
           <ListItem button>
@@ -31,13 +31,7 @@ const AuctionsList: FC<{ auctions: IAuction[] }> = ({ auctions }) => {
                 {auction.reserve ? 'Cu rezervă' : 'Fără rezervă'}
               </Typography>
             </div>
-            <ListItemSecondaryAction
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-end',
-              }}
-            >
+            <ListItemSecondaryAction className="flex-column align-items-end">
               {auction.status === AuctionStatus.LIVE ? (
                 <>
                   {auction.lastBid !== 0 ? (

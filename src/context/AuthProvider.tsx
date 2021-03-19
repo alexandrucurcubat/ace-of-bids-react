@@ -1,18 +1,5 @@
-import {
-  createContext,
-  FC,
-  MouseEvent,
-  SyntheticEvent,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from 'react';
-import { useHistory } from 'react-router-dom';
+import { createContext, FC, useContext, useEffect, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
-import Snackbar from '@material-ui/core/Snackbar';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 
 import AuthDialog from '../components/auth/AuthDialog';
 import * as authApi from '../components/auth/api/auth-api';
@@ -52,10 +39,8 @@ export const AuthContext = createContext<IAuthContext>({
 });
 
 const AuthProvider: FC = ({ children }) => {
-  const [isSnackbarOpened, setIsSnackbarOpened] = useState(false);
   const [authState, authDispatch] = useReducer(authReducer, initialAuthState);
   const { appDispatch } = useContext(AppContext);
-  const history = useHistory();
 
   const onLogin = async (loginData: ILoginData) => {
     try {
@@ -68,7 +53,6 @@ const AuthProvider: FC = ({ children }) => {
       authDispatch(setLoggedUser(decodedToken.user));
       authDispatch(closeAuthDialog());
       localStorage.setItem(LocalStorage.JWT, jwt);
-      history.push('/account');
     } catch (error) {
       appDispatch(setError(error));
     }
@@ -77,9 +61,8 @@ const AuthProvider: FC = ({ children }) => {
   const onRegister = async (registrationData: IRegistrationData) => {
     try {
       appDispatch(setError(null));
-      authApi.register(registrationData);
+      await authApi.register(registrationData);
       onLogin(registrationData);
-      setIsSnackbarOpened(true);
     } catch (error) {
       appDispatch(setError(error));
     }
@@ -96,16 +79,6 @@ const AuthProvider: FC = ({ children }) => {
     authTimer = setTimeout(() => {
       onLogout();
     }, expiresIn(expirationDate) * 1000);
-  };
-
-  const handleCloseSnackbar = (
-    event: SyntheticEvent | MouseEvent,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setIsSnackbarOpened(false);
   };
 
   useEffect(() => {
@@ -136,28 +109,6 @@ const AuthProvider: FC = ({ children }) => {
       }}
     >
       {children}
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        open={isSnackbarOpened}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        message="Înregistrare reușită cu succes!"
-        action={
-          <>
-            <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
-              onClick={handleCloseSnackbar}
-            >
-              <CloseIcon fontSize="small" />
-            </IconButton>
-          </>
-        }
-      />
       <AuthDialog />
     </AuthContext.Provider>
   );

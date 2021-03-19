@@ -53,9 +53,7 @@ const Header: FC = () => {
           {!isMobile && (
             <>
               <Button
-                style={{ textTransform: 'none' }}
-                aria-controls="auctions-menu"
-                aria-haspopup="true"
+                className={classes.noTextTransform}
                 onClick={handleAuctionsMenuClick}
               >
                 Licitații
@@ -66,10 +64,7 @@ const Header: FC = () => {
                 open={Boolean(auctionsMenu)}
                 onClose={handleAuctionsMenuClose}
               >
-                <Link
-                  to="/auctions?status=live"
-                  style={{ textDecoration: 'none', display: 'block' }}
-                >
+                <Link to="/auctions?status=live" className={classes.link}>
                   <MenuItem onClick={handleAuctionsMenuClose}>
                     <ListItemIcon className={classes.listItemIcon}>
                       <RssFeed fontSize="small" />
@@ -77,28 +72,19 @@ const Header: FC = () => {
                     <Typography className={classes.success}>Live</Typography>
                   </MenuItem>
                 </Link>
-                <Link
-                  to="/auctions?status=closed"
-                  style={{ textDecoration: 'none', display: 'block' }}
-                >
+                <Link to="/auctions?status=closed" className={classes.link}>
                   <MenuItem onClick={handleAuctionsMenuClose}>
                     <ListItemIcon className={classes.listItemIcon}>
                       <Gavel fontSize="small" />
                     </ListItemIcon>
-                    <Typography
-                      style={{
-                        color: themeState.isDarkMode ? 'white' : 'black',
-                      }}
-                    >
-                      Închise
-                    </Typography>
+                    <Typography>Închise</Typography>
                   </MenuItem>
                 </Link>
               </Menu>
               <Button
                 component={Link}
                 to={'/about'}
-                style={{ textTransform: 'none' }}
+                className={classes.noTextTransform}
               >
                 Despre noi
               </Button>
@@ -106,10 +92,8 @@ const Header: FC = () => {
                 <>
                   <Button
                     color="primary"
-                    aria-controls="account-menu"
-                    aria-haspopup="true"
                     onClick={handleAccountMenuClick}
-                    style={{ textTransform: 'none' }}
+                    className={classes.noTextTransform}
                   >
                     Contul meu
                   </Button>
@@ -119,20 +103,12 @@ const Header: FC = () => {
                     open={Boolean(accountMenu)}
                     onClose={handleAccountMenuClose}
                   >
-                    <Link
-                      to="/account"
-                      style={{ textDecoration: 'none', display: 'block' }}
-                    >
+                    <Link to="/account" className={classes.link}>
                       <MenuItem onClick={handleAccountMenuClose}>
                         <ListItemIcon className={classes.listItemIcon}>
                           <Person fontSize="small" />
                         </ListItemIcon>
-                        <Typography
-                          className={classes.listItemIcon}
-                          style={{
-                            color: themeState.isDarkMode ? 'white' : 'black',
-                          }}
-                        >
+                        <Typography className={classes.listItemIcon}>
                           {authState.loggedUser?.username}
                         </Typography>
                       </MenuItem>
@@ -149,7 +125,7 @@ const Header: FC = () => {
                 </>
               ) : (
                 <Button
-                  style={{ textTransform: 'none' }}
+                  className={classes.noTextTransform}
                   onClick={() => handleOpenAuthDialog()}
                   color="primary"
                 >
@@ -160,7 +136,6 @@ const Header: FC = () => {
               <IconButton
                 edge="end"
                 color={themeState.isDarkMode ? 'secondary' : 'inherit'}
-                aria-label="mode"
                 onClick={handleSetDarkMode}
               >
                 {themeState.isDarkMode ? (

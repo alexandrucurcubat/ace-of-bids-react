@@ -25,7 +25,7 @@ const PasswordResetForm: FC<PasswordResetFormProps> = ({ onLoginMode }) => {
       <DialogContent>
         <DialogContentText>
           Cunoști parola?
-          <Link className="link-register" to="#" onClick={handleLoginMode}>
+          <Link className="px-5" to="#" onClick={handleLoginMode}>
             Conectează-te
           </Link>
         </DialogContentText>
