@@ -6,10 +6,10 @@ import LoginForm from './login/LoginForm';
 import RegistrationForm from './registration/RegistrationForm';
 import PasswordResetForm from './password-reset/PasswordResetForm';
 import { FormType } from '../../models/form-type.enum';
-import { AuthContext } from '../../context/AuthProvider';
-import { closeAuthDialog } from '../../context/actions/auth-actions';
-import { AppContext } from '../../context/AppProvider';
-import { setError } from '../../context/actions/app-actions';
+import { AuthContext } from '../../store/AuthProvider';
+import { closeAuthDialog } from '../../store/actions/auth-actions';
+import { AppContext } from '../../store/AppProvider';
+import { setError } from '../../store/actions/app-actions';
 
 const renderFormByType = ({
   handleRegistrationMode,

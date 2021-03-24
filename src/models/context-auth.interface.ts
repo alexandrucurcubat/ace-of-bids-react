@@ -1,4 +1,4 @@
-import { IAuthState } from '../context/reducers/auth-reducer';
+import { IAuthState } from '../store/reducers/auth-reducer';
 import { ILoginData } from './form-data-login.interface';
 import { IRegistrationData } from './form-data-registration.interface';
 

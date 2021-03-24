@@ -11,7 +11,6 @@ import Divider from '@material-ui/core/Divider';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
-import './AuctionsHeader.css';
 import {
   AuctionsFilterBy,
   AuctionStatus,
@@ -70,10 +69,10 @@ const AuctionsHeader: FC<{
             </Select>
           </FormControl>
         ) : (
-          <div className="flex pt-16">
+          <h2 className="pt-16">
             <Gavel />
-            <span className="closed px-5">Închise</span>
-          </div>
+            <span> Închise</span>
+          </h2>
         )}
         <ToggleButtonGroup
           value={auctionsView}

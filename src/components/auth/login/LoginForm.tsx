@@ -11,8 +11,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import Lock from '@material-ui/icons/Lock';
 
-import { AuthContext } from '../../../context/AuthProvider';
-import { AppContext } from '../../../context/AppProvider';
+import { AuthContext } from '../../../store/AuthProvider';
+import { AppContext } from '../../../store/AppProvider';
 import { ILoginData } from '../../../models/form-data-login.interface';
 
 interface LoginFormProps {

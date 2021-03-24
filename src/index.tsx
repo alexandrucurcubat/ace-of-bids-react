@@ -5,9 +5,9 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import DarkThemeProvider from './context/ThemeProvider';
-import AuthProvider from './context/AuthProvider';
-import AppProvider from './context/AppProvider';
+import DarkThemeProvider from './store/ThemeProvider';
+import AuthProvider from './store/AuthProvider';
+import AppProvider from './store/AppProvider';
 
 ReactDOM.render(
   <React.StrictMode>

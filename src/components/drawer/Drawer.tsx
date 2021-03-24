@@ -28,12 +28,11 @@ import Gavel from '@material-ui/icons/Gavel';
 import Person from '@material-ui/icons/Person';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
-import './Drawer.css';
 import { useStyles } from '../../theming';
-import { DarkThemeContext } from '../../context/ThemeProvider';
-import { AuthContext } from '../../context/AuthProvider';
-import { setDarkMode } from '../../context/actions/theme-actions';
-import { openAuthDialog } from '../../context/actions/auth-actions';
+import { DarkThemeContext } from '../../store/ThemeProvider';
+import { AuthContext } from '../../store/AuthProvider';
+import { setDarkMode } from '../../store/actions/theme-actions';
+import { openAuthDialog } from '../../store/actions/auth-actions';
 
 const isIOS =
   (process as any).browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -74,7 +73,7 @@ const Drawer: FC = () => {
   }, [isMobile, isOpened]);
 
   return (
-    <>
+    <aside>
       <SwipeableDrawer
         anchor="left"
         open={isOpened}
@@ -204,7 +203,7 @@ const Drawer: FC = () => {
           <Menu />
         </Fab>
       )}
-    </>
+    </aside>
   );
 };
 

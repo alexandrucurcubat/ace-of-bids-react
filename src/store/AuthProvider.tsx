@@ -2,7 +2,7 @@ import { createContext, FC, useContext, useEffect, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
 
 import AuthDialog from '../components/auth/AuthDialog';
-import * as authApi from '../components/auth/api/auth-api';
+import * as authApi from '../api/auth-api';
 import { LocalStorage } from '../models/local-storage.enum';
 import { IJwtPayload } from '../models/jwt-payload.interface';
 import { ILoginData } from '../models/form-data-login.interface';
@@ -99,16 +99,16 @@ const AuthProvider: FC = ({ children }) => {
     }
   }, []);
 
+  const context = {
+    authState,
+    authDispatch,
+    onLogin,
+    onLogout,
+    onRegister,
+  };
+
   return (
-    <AuthContext.Provider
-      value={{
-        authState,
-        authDispatch,
-        onLogin,
-        onLogout,
-        onRegister,
-      }}
-    >
+    <AuthContext.Provider value={context}>
       {children}
       <AuthDialog />
     </AuthContext.Provider>

@@ -1,4 +1,4 @@
-import { IThemeState } from '../context/reducers/theme-reducer';
+import { IThemeState } from '../store/reducers/theme-reducer';
 
 export interface IThemeContext {
   themeState: IThemeState;

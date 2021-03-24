@@ -17,10 +17,11 @@ import Person from '@material-ui/icons/Person';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
 import { useStyles } from '../../theming';
-import { DarkThemeContext } from '../../context/ThemeProvider';
-import { AuthContext } from '../../context/AuthProvider';
-import { setDarkMode } from '../../context/actions/theme-actions';
-import { openAuthDialog } from '../../context/actions/auth-actions';
+import { DarkThemeContext } from '../../store/ThemeProvider';
+import { AuthContext } from '../../store/AuthProvider';
+import { openAuthDialog } from '../../store/actions/auth-actions';
+import { setDarkMode } from '../../store/actions/theme-actions';
+
 
 const Header: FC = () => {
   const [auctionsMenu, setAuctionsMenu] = useState<null | HTMLElement>(null);

@@ -25,8 +25,10 @@ const DarkThemeProvider: FC = ({ children }) => {
     initialThemeState
   );
 
+  const context = { themeState, themeDispatch };
+
   return (
-    <DarkThemeContext.Provider value={{ themeState, themeDispatch }}>
+    <DarkThemeContext.Provider value={context}>
       <ThemeProvider theme={themeState.theme}>{children}</ThemeProvider>
     </DarkThemeContext.Provider>
   );

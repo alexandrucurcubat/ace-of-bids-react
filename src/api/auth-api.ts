@@ -1,7 +1,7 @@
-import { IError } from '../../../models/error.interface';
-import { ILoginData } from '../../../models/form-data-login.interface';
-import { IRegistrationData } from '../../../models/form-data-registration.interface';
-import { IJwtResponse } from '../../../models/jwt-response.interface';
+import { IError } from '../models/error.interface';
+import { ILoginData } from '../models/form-data-login.interface';
+import { IRegistrationData } from '../models/form-data-registration.interface';
+import { IJwtResponse } from '../models/jwt-response.interface';
 
 export const login = async (loginData: ILoginData) => {
   const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {

@@ -75,10 +75,6 @@ export const useStyles = makeStyles(
     listItemIcon: {
       minWidth: theme.spacing(4),
     },
-    labelSuccess: {
-      color: 'var(--success)',
-      fontSize: '150%',
-    },
     labelIcon: {
       marginBottom: '-4px',
     },

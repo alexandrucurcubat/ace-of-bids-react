@@ -16,14 +16,14 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
 import './Account.css';
-import * as accountApi from './api/account-api';
-import { AuthContext } from '../../context/AuthProvider';
-import { IAccountData } from '../../models/form-data-account.interface';
-import { AppContext } from '../../context/AppProvider';
-import { setError as setAppError } from '../../context/actions/app-actions';
-import { setLoggedUser } from '../../context/actions/auth-actions';
-import { LocalStorage } from '../../models/local-storage.enum';
-import { handleError } from '../../utils/error-handler';
+import * as accountApi from '../api/account-api';
+import { AuthContext } from '../store/AuthProvider';
+import { IAccountData } from '../models/form-data-account.interface';
+import { AppContext } from '../store/AppProvider';
+import { setError as setAppError } from '../store/actions/app-actions';
+import { setLoggedUser } from '../store/actions/auth-actions';
+import { LocalStorage } from '../models/local-storage.enum';
+import { handleError } from '../utils/error-handler';
 
 const Account: FC = () => {
   const [isSnackbarOpened, setIsSnackbarOpened] = useState(false);

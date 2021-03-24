@@ -1,6 +1,6 @@
 import fetchIntercept from 'fetch-intercept';
 
-import { setIsLoading } from '../context/actions/app-actions';
+import { setIsLoading } from '../store/actions/app-actions';
 import { LocalStorage } from '../models/local-storage.enum';
 
 let totalRequests = 0;

@@ -5,19 +5,19 @@ import {
   AuctionStatus,
   AuctionsView,
   IAuction,
-} from '../../models/auction.interface';
-import { getAuctions } from './api/auctions-api';
-import AuctionsGrid from './AuctionsGrid';
-import { useInterval } from '../../hooks/interval';
-import AuctionsHeader from './AuctionsHeader';
-import { LocalStorage } from '../../models/local-storage.enum';
-import AuctionsList from './AuctionsList';
+} from '../models/auction.interface';
+import { getAuctions } from '../api/auctions-api';
+import AuctionsGrid from '../components/auctions/AuctionsGrid';
+import { useInterval } from '../hooks/interval';
+import AuctionsHeader from '../components/auctions/AuctionsHeader';
+import { LocalStorage } from '../models/local-storage.enum';
+import AuctionsList from '../components/auctions/AuctionsList';
 
 const localAuctionsView =
   (localStorage.getItem(LocalStorage.AUCTION_VIEW) as AuctionsView) ||
   AuctionsView.GRID;
 
-const AuctionsContainer: FC<{ status: AuctionStatus }> = ({ status }) => {
+const Auctions: FC<{ status: AuctionStatus }> = ({ status }) => {
   const [auctions, setAuctions] = useState<IAuction[]>([]);
   const [filterBy, setFilterBy] = useState(AuctionsFilterBy.ENDING_SOON);
   const [auctionsView, setAuctionsView] = useState(localAuctionsView);
@@ -63,4 +63,4 @@ const AuctionsContainer: FC<{ status: AuctionStatus }> = ({ status }) => {
   );
 };
 
-export default AuctionsContainer;
+export default Auctions;

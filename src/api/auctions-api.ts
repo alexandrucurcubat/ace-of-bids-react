@@ -3,7 +3,7 @@ import {
   AuctionCurrency,
   AuctionStatus,
   AuctionsFilterBy,
-} from '../../../models/auction.interface';
+} from '../models/auction.interface';
 
 const auctions: IAuction[] = [
   {

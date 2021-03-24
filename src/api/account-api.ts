@@ -1,9 +1,9 @@
-import { IUser } from '../../../models/user.interface';
-import { IError } from '../../../models/error.interface';
+import { IUser } from '../models/user.interface';
+import { IError } from '../models/error.interface';
 import {
   IPasswordData,
   IUsernameData,
-} from '../../../models/form-data-account.interface';
+} from '../models/form-data-account.interface';
 
 export const updateUsername = async (
   id: number,

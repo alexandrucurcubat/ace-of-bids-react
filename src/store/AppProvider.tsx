@@ -16,11 +16,9 @@ export const AppContext = createContext<IAppContext>({
 const AppProvider: FC = ({ children }) => {
   const [appState, appDispatch] = useReducer(appReducer, initialAppState);
 
-  return (
-    <AppContext.Provider value={{ appState, appDispatch }}>
-      {children}
-    </AppContext.Provider>
-  );
+  const context = { appState, appDispatch };
+
+  return <AppContext.Provider value={context}>{children}</AppContext.Provider>;
 };
 
 export default AppProvider;

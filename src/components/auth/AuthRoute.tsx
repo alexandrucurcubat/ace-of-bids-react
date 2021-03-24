@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 
-import { AuthContext } from '../../context/AuthProvider';
+import { AuthContext } from '../../store/AuthProvider';
 import { LocalStorage } from '../../models/local-storage.enum';
 
 const AuthRoute: FC<{ path: string }> = ({ children, ...props }) => {

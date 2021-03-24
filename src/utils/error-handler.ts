@@ -1,4 +1,4 @@
-import { setError, setIsLoading } from '../context/actions/app-actions';
+import { setError, setIsLoading } from '../store/actions/app-actions';
 
 export const handleError = (error: any, appDispatch: any) => {
   appDispatch(setIsLoading(false));

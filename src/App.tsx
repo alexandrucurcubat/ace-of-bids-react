@@ -4,16 +4,15 @@ import { CssBaseline, ThemeProvider } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-import './App.css';
 import { useStyles } from './theming';
-import { AppContext } from './context/AppProvider';
-import { DarkThemeContext } from './context/ThemeProvider';
+import { AppContext } from './store/AppProvider';
+import { DarkThemeContext } from './store/ThemeProvider';
 import Drawer from './components/drawer/Drawer';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
 import AuthRoute from './components/auth/AuthRoute';
-import AuctionsContainer from './components/auctions/AuctionsContainer';
-import Account from './components/account/Account';
+import Auctions from './pages/Auctions';
+import Account from './pages/Account';
 import { initInterceptor } from './core/app-interceptor';
 import { AuctionStatus } from './models/auction.interface';
 
@@ -39,9 +38,7 @@ function App() {
       <Container fixed className={classes.appContainer}>
         <Switch>
           <Route path="/auctions">
-            <AuctionsContainer
-              status={queryParams.get('status') as AuctionStatus}
-            />
+            <Auctions status={queryParams.get('status') as AuctionStatus} />
           </Route>
           <Route path="/about">Despre noi</Route>
           <AuthRoute path="/account">

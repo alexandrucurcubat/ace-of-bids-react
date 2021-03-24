@@ -13,8 +13,8 @@ import Person from '@material-ui/icons/Person';
 import Lock from '@material-ui/icons/Lock';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
-import { AuthContext } from '../../../context/AuthProvider';
-import { AppContext } from '../../../context/AppProvider';
+import { AuthContext } from '../../../store/AuthProvider';
+import { AppContext } from '../../../store/AppProvider';
 
 interface RegistrationFormProps {
   onLoginMode: () => void;

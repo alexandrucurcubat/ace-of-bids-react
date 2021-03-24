@@ -1,4 +1,4 @@
-import { IAppState } from '../context/reducers/app-reducer';
+import { IAppState } from '../store/reducers/app-reducer';
 
 export interface IAppContext {
   appState: IAppState;
