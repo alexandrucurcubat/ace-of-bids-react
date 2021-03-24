@@ -5,8 +5,8 @@ import Container from '@material-ui/core/Container';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { useStyles } from './theming';
-import { AppContext } from './store/AppProvider';
-import { DarkThemeContext } from './store/ThemeProvider';
+import { AppContext } from './store/app-context';
+import { ThemeContext } from './store/theme-context';
 import Drawer from './components/drawer/Drawer';
 import Header from './components/header/Header';
 import Footer from './components/footer/Footer';
@@ -20,7 +20,7 @@ const useQuery = () => new URLSearchParams(useLocation().search);
 
 function App() {
   const { appState, appDispatch } = useContext(AppContext);
-  const { themeState } = useContext(DarkThemeContext);
+  const { themeState } = useContext(ThemeContext);
   const classes = useStyles();
   const queryParams = useQuery();
 

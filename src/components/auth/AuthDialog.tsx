@@ -6,9 +6,9 @@ import LoginForm from './login/LoginForm';
 import RegistrationForm from './registration/RegistrationForm';
 import PasswordResetForm from './password-reset/PasswordResetForm';
 import { FormType } from '../../models/form-type.enum';
-import { AuthContext } from '../../store/AuthProvider';
+import { AuthContext } from '../../store/auth-context';
 import { closeAuthDialog } from '../../store/actions/auth-actions';
-import { AppContext } from '../../store/AppProvider';
+import { AppContext } from '../../store/app-context';
 import { setError } from '../../store/actions/app-actions';
 
 const renderFormByType = ({

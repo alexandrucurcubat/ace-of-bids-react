@@ -17,9 +17,9 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import './Account.css';
 import * as accountApi from '../api/account-api';
-import { AuthContext } from '../store/AuthProvider';
+import { AuthContext } from '../store/auth-context';
 import { IAccountData } from '../models/form-data-account.interface';
-import { AppContext } from '../store/AppProvider';
+import { AppContext } from '../store/app-context';
 import { setError as setAppError } from '../store/actions/app-actions';
 import { setLoggedUser } from '../store/actions/auth-actions';
 import { LocalStorage } from '../models/local-storage.enum';

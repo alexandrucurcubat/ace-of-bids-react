@@ -14,12 +14,12 @@ const initialThemeState: IThemeState = {
   theme: localIsDarkMode ? DARK_THEME : LIGHT_THEME,
 };
 
-export const DarkThemeContext = createContext<IThemeContext>({
+export const ThemeContext = createContext<IThemeContext>({
   themeState: initialThemeState,
   themeDispatch: () => {},
 });
 
-const DarkThemeProvider: FC = ({ children }) => {
+const ThemeContextProvider: FC = ({ children }) => {
   const [themeState, themeDispatch] = useReducer(
     themeReducer,
     initialThemeState
@@ -28,10 +28,10 @@ const DarkThemeProvider: FC = ({ children }) => {
   const context = { themeState, themeDispatch };
 
   return (
-    <DarkThemeContext.Provider value={context}>
+    <ThemeContext.Provider value={context}>
       <ThemeProvider theme={themeState.theme}>{children}</ThemeProvider>
-    </DarkThemeContext.Provider>
+    </ThemeContext.Provider>
   );
 };
 
-export default DarkThemeProvider;
+export default ThemeContextProvider;

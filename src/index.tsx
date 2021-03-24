@@ -5,20 +5,20 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import DarkThemeProvider from './store/ThemeProvider';
-import AuthProvider from './store/AuthProvider';
-import AppProvider from './store/AppProvider';
+import ThemeContextProvider from './store/theme-context';
+import AuthContextProvider from './store/auth-context';
+import AppContextProvider from './store/app-context';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <DarkThemeProvider>
-        <AppProvider>
-          <AuthProvider>
+      <ThemeContextProvider>
+        <AppContextProvider>
+          <AuthContextProvider>
             <App />
-          </AuthProvider>
-        </AppProvider>
-      </DarkThemeProvider>
+          </AuthContextProvider>
+        </AppContextProvider>
+      </ThemeContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

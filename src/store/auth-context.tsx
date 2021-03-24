@@ -13,7 +13,7 @@ import {
   getTokenExpirationDate,
   isTokenExpired,
 } from '../utils/jwt-helper';
-import { AppContext } from './AppProvider';
+import { AppContext } from './app-context';
 import { setError } from './actions/app-actions';
 import { authReducer, IAuthState } from './reducers/auth-reducer';
 import {
@@ -39,7 +39,7 @@ export const AuthContext = createContext<IAuthContext>({
   onRegister: () => {},
 });
 
-const AuthProvider: FC = ({ children }) => {
+const AuthContextProvider: FC = ({ children }) => {
   const [authState, authDispatch] = useReducer(authReducer, initialAuthState);
   const { appDispatch } = useContext(AppContext);
 
@@ -115,4 +115,4 @@ const AuthProvider: FC = ({ children }) => {
   );
 };
 
-export default AuthProvider;
+export default AuthContextProvider;

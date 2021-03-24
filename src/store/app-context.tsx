@@ -13,7 +13,7 @@ export const AppContext = createContext<IAppContext>({
   appDispatch: () => {},
 });
 
-const AppProvider: FC = ({ children }) => {
+const AppContextProvider: FC = ({ children }) => {
   const [appState, appDispatch] = useReducer(appReducer, initialAppState);
 
   const context = { appState, appDispatch };
@@ -21,4 +21,4 @@ const AppProvider: FC = ({ children }) => {
   return <AppContext.Provider value={context}>{children}</AppContext.Provider>;
 };
 
-export default AppProvider;
+export default AppContextProvider;

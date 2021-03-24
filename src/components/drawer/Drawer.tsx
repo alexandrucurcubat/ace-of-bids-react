@@ -29,8 +29,8 @@ import Person from '@material-ui/icons/Person';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
 import { useStyles } from '../../theming';
-import { DarkThemeContext } from '../../store/ThemeProvider';
-import { AuthContext } from '../../store/AuthProvider';
+import { ThemeContext } from '../../store/theme-context';
+import { AuthContext } from '../../store/auth-context';
 import { setDarkMode } from '../../store/actions/theme-actions';
 import { openAuthDialog } from '../../store/actions/auth-actions';
 
@@ -41,7 +41,7 @@ const Drawer: FC = () => {
   const [isOpened, setIsOpened] = useState(false);
   const [showNestedAuctions, setShowNestedAuctions] = useState(false);
   const [showNestedAccount, setShowNestedAccount] = useState(false);
-  const { themeState, themeDispatch } = useContext(DarkThemeContext);
+  const { themeState, themeDispatch } = useContext(ThemeContext);
   const { authState, authDispatch, onLogout } = useContext(AuthContext);
   const classes = useStyles();
   const isMobile = useMediaQuery((theme: Theme) =>
